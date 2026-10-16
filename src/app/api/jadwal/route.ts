@@ -1,116 +1,70 @@
 import { NextResponse } from "next/server";
-import { CSV_EXPORT_URL, parseCSV, transformRowsToJadwal, JadwalKunjungan } from "@/lib/sheets";
+import { parseCSV, transformRowsToJadwal, JadwalKunjungan } from "@/lib/sheets";
 
-// Fallback sample data in case internet connection is unreachable during tests/offline
-const FALLBACK_DATA: JadwalKunjungan[] = [
-  {
-    id: "sample-1",
-    no: "1",
-    rawDateTime: "11/12/2026 13:00 - Selesai",
-    dateIso: "2026-11-12",
-    dateFormatted: "Kamis, 12 November 2026",
-    timeFormatted: "13:00 - Selesai WIB",
-    kegiatan: "Kunjungan Industri",
-    instansi: "SMK NEGERI UNGGUL TERPADU ANAK TUHA LAMPUNG",
-    status: "Completed",
-    pic: "Mb Lusi",
-    jumlahPeserta: "66",
-    tempat: "Gedung GoTo STP",
-    noSurat: "060/SEPT",
-    isToday: true,
-    isUpcoming: true,
-  },
-  {
-    id: "sample-2",
-    no: "2",
-    rawDateTime: "11/16/2026 08:00 - Selesai",
-    dateIso: "2026-11-16",
-    dateFormatted: "Senin, 16 November 2026",
-    timeFormatted: "08:00 - Selesai WIB",
-    kegiatan: "Kunjungan Industri",
-    instansi: "SMK TELADAN KERTASEMAYA INDRAMAYU",
-    status: "Completed",
-    pic: "Mb Lusi",
-    jumlahPeserta: "216",
-    tempat: "Aula Gedung RnD",
-    noSurat: "023/OKT",
-    isToday: false,
-    isUpcoming: true,
-  },
-  {
-    id: "sample-3",
-    no: "3",
-    rawDateTime: "11/24/2026 09:00 - Selesai",
-    dateIso: "2026-11-24",
-    dateFormatted: "Selasa, 24 November 2026",
-    timeFormatted: "09:00 - Selesai WIB",
-    kegiatan: "Kunjungan Industri",
-    instansi: "SMK KOSGORO NGANJUK",
-    status: "Completed",
-    pic: "Mb Lusi",
-    jumlahPeserta: "50",
-    tempat: "Auditorium Utama STP",
-    noSurat: "080/SEPT",
-    isToday: false,
-    isUpcoming: true,
-  },
-  {
-    id: "sample-4",
-    no: "4",
-    rawDateTime: "11/25/2026 09:00 - 11:00",
-    dateIso: "2026-11-25",
-    dateFormatted: "Rabu, 25 November 2026",
-    timeFormatted: "09:00 - 11:00 WIB",
-    kegiatan: "Kunjungan Industri & Workshop",
-    instansi: "SMK MANAHIJUL HUDA PATI",
-    status: "Completed",
-    pic: "Mb Lusi",
-    jumlahPeserta: "100",
-    tempat: "Aula Gedung RnD",
-    noSurat: "082/AGUST",
-    isToday: false,
-    isUpcoming: true,
-  },
-];
+// Always fetch live Google Spreadsheet with cache-buster timestamp
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const customGid = searchParams.get("gid") || "0";
   const sheetId = searchParams.get("sheetId") || "1aMlArIv2r6h7evDIJrpTsY2YMrE1NCtQUmf0Q4yZyoI";
 
-  const fetchUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${customGid}`;
+  // Cache buster timestamp prevents Google Sheets CDN from returning stale CSV
+  const cacheBuster = Date.now();
+  const fetchUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${customGid}&_t=${cacheBuster}`;
 
   try {
     const res = await fetch(fetchUrl, {
-      next: { revalidate: 30 }, // Cache in Next.js for 30s
+      cache: "no-store",
       headers: {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) SivikaDigitalSignage/1.0",
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) SivikaLive/2.0",
       },
     });
 
     if (!res.ok) {
-      throw new Error(`Failed to fetch spreadsheet: ${res.statusText}`);
+      throw new Error(`Google Sheets responded with status: ${res.status} ${res.statusText}`);
     }
 
     const csvText = await res.text();
     const rows = parseCSV(csvText);
     const jadwal = transformRowsToJadwal(rows);
 
-    return NextResponse.json({
-      success: true,
-      source: "live_google_sheets",
-      count: jadwal.length,
-      data: jadwal,
-      lastUpdated: new Date().toISOString(),
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        source: "live_google_sheets",
+        count: jadwal.length,
+        timestamp: cacheBuster,
+        data: jadwal,
+        lastUpdated: new Date().toISOString(),
+      },
+      {
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+      }
+    );
   } catch (error) {
-    console.warn("Spreadsheet fetch failed, using fallback:", error);
-    return NextResponse.json({
-      success: true,
-      source: "fallback_cache",
-      count: FALLBACK_DATA.length,
-      data: FALLBACK_DATA,
-      lastUpdated: new Date().toISOString(),
-    });
+    console.error("Gagal mengambil Google Spreadsheet secara langsung:", error);
+    return NextResponse.json(
+      {
+        success: false,
+        error: error instanceof Error ? error.message : "Gagal memuat spreadsheet",
+        source: "error",
+        count: 0,
+        data: [],
+        lastUpdated: new Date().toISOString(),
+      },
+      {
+        status: 500,
+        headers: {
+          "Cache-Control": "no-store, max-age=0",
+        },
+      }
+    );
   }
 }
