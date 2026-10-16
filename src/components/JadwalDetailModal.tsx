@@ -12,7 +12,6 @@ import {
   Building,
   CheckCircle2,
   ExternalLink,
-  Share2,
 } from "lucide-react";
 import { JadwalKunjungan, SPREADSHEET_URL } from "@/lib/sheets";
 
@@ -28,8 +27,14 @@ export default function JadwalDetailModal({
   if (!jadwal) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-150">
-      <div className="bg-white rounded-3xl w-full max-w-2xl shadow-2xl border border-slate-100 overflow-hidden relative animate-in zoom-in-95 duration-200">
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-150"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="bg-white rounded-3xl w-full max-w-2xl shadow-2xl border border-slate-100 overflow-hidden relative animate-in zoom-in-95 duration-200"
+      >
         {/* Top Crimson Banner */}
         <div className="bg-gradient-to-r from-red-600 via-rose-600 to-red-700 px-6 py-5 text-white flex items-center justify-between">
           <div className="flex items-center gap-3">

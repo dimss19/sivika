@@ -5,15 +5,11 @@ import {
   Calendar,
   Clock,
   MapPin,
-  Users,
   Search,
-  Filter,
   Eye,
-  ExternalLink,
   ChevronLeft,
   ChevronRight,
   Flame,
-  CheckCircle2,
   Tv,
   FileSpreadsheet,
 } from "lucide-react";
@@ -24,16 +20,12 @@ interface JadwalExplorerProps {
   items: JadwalKunjungan[];
   onSelectItem: (item: JadwalKunjungan) => void;
   onOpenTvMode: () => void;
-  isRefreshing: boolean;
-  onRefresh: () => void;
 }
 
 export default function JadwalExplorer({
   items,
   onSelectItem,
   onOpenTvMode,
-  isRefreshing,
-  onRefresh,
 }: JadwalExplorerProps) {
   const [activeTab, setActiveTab] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");

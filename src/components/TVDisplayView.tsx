@@ -18,13 +18,9 @@ import {
   MapPin,
   Users,
   Eye,
-  Flame,
-  CheckCircle2,
   RefreshCw,
-  X,
 } from "lucide-react";
 import { JadwalKunjungan } from "@/lib/sheets";
-import ZoomControl from "./ZoomControl";
 import STPVideoPlayer from "./STPVideoPlayer";
 
 interface TVDisplayViewProps {
@@ -50,7 +46,7 @@ export default function TVDisplayView({
 }: TVDisplayViewProps) {
   const [tvMode, setTvMode] = useState<TVModeType>("carousel");
   const [tvZoom, setTvZoom] = useState<number>(100);
-  const [slideInterval, setSlideInterval] = useState<number>(10);
+  const slideInterval = 10;
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [progress, setProgress] = useState<number>(0);
   const [time, setTime] = useState<string>("");
@@ -98,16 +94,15 @@ export default function TVDisplayView({
   const itemsPerPage = tvMode === "split" ? 4 : 6;
   const totalPages = Math.max(1, Math.ceil(activeItems.length / itemsPerPage));
 
-  // Reset page when mode changes
-  useEffect(() => {
+  const handleModeChange = (newMode: TVModeType) => {
+    setTvMode(newMode);
     setCurrentPage(0);
     setProgress(0);
-  }, [tvMode, activeItems.length]);
+  };
 
   // Carousel Auto-rotation
   useEffect(() => {
     if (tvMode !== "carousel" || totalPages <= 1) {
-      setProgress(0);
       return;
     }
 
@@ -126,12 +121,16 @@ export default function TVDisplayView({
       }
     }, stepMs);
 
-    return () => clearInterval(timer);
+    return () => {
+      clearInterval(timer);
+      setProgress(0);
+    };
   }, [tvMode, totalPages, slideInterval]);
 
+  const activePage = currentPage >= totalPages ? 0 : currentPage;
   const displayedItems =
     tvMode === "carousel"
-      ? activeItems.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
+      ? activeItems.slice(activePage * itemsPerPage, (activePage + 1) * itemsPerPage)
       : activeItems.slice(0, itemsPerPage);
 
   const toggleFullscreen = () => {
@@ -213,7 +212,7 @@ export default function TVDisplayView({
         {/* Mode Selector Tabs */}
         <div className="flex items-center gap-2 text-xs font-bold">
           <button
-            onClick={() => setTvMode("carousel")}
+            onClick={() => handleModeChange("carousel")}
             className={`px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 ${
               tvMode === "carousel"
                 ? "bg-rose-600 text-white shadow-sm"
@@ -225,7 +224,7 @@ export default function TVDisplayView({
           </button>
 
           <button
-            onClick={() => setTvMode("today")}
+            onClick={() => handleModeChange("today")}
             className={`px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 ${
               tvMode === "today"
                 ? "bg-rose-600 text-white shadow-sm"
@@ -237,7 +236,7 @@ export default function TVDisplayView({
           </button>
 
           <button
-            onClick={() => setTvMode("split")}
+            onClick={() => handleModeChange("split")}
             className={`px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 ${
               tvMode === "split"
                 ? "bg-rose-600 text-white shadow-sm"
@@ -249,7 +248,7 @@ export default function TVDisplayView({
           </button>
 
           <button
-            onClick={() => setTvMode("all")}
+            onClick={() => handleModeChange("all")}
             className={`px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 ${
               tvMode === "all"
                 ? "bg-rose-600 text-white shadow-sm"

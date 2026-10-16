@@ -5,11 +5,9 @@ import {
   Building2,
   Cpu,
   Layers,
-  GraduationCap,
   Sparkles,
   Flame,
   Gamepad2,
-  Users2,
 } from "lucide-react";
 
 export default function FasilitasSection() {

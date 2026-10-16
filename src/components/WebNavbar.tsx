@@ -5,14 +5,9 @@ import Image from "next/image";
 import {
   Tv,
   Calendar,
-  Building2,
   RefreshCw,
-  Video,
-  Info,
   Menu,
   X,
-  ExternalLink,
-  Sparkles,
 } from "lucide-react";
 import { SPREADSHEET_URL } from "@/lib/sheets";
 
@@ -21,7 +16,6 @@ interface WebNavbarProps {
   onRefresh: () => void;
   isRefreshing: boolean;
   totalSchedule: number;
-  lastUpdated: string;
   isLive: boolean;
 }
 
@@ -30,7 +24,6 @@ export default function WebNavbar({
   onRefresh,
   isRefreshing,
   totalSchedule,
-  lastUpdated,
   isLive,
 }: WebNavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

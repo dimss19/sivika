@@ -8,7 +8,6 @@ import {
   Users,
   UserCheck,
   FileText,
-  Sparkles,
   ChevronLeft,
   ChevronRight,
   Flame,
@@ -36,16 +35,9 @@ export default function JadwalGrid({
   const itemsPerPage = isSplitView ? 4 : 6;
   const totalPages = Math.max(1, Math.ceil(items.length / itemsPerPage));
 
-  // Reset page when items or mode changes
-  useEffect(() => {
-    setCurrentPage(0);
-    setProgress(0);
-  }, [items.length, mode]);
-
   // Auto carousel rotation
   useEffect(() => {
     if (mode !== "carousel" || totalPages <= 1) {
-      setProgress(0);
       return;
     }
 
@@ -64,12 +56,16 @@ export default function JadwalGrid({
       }
     }, stepMs);
 
-    return () => clearInterval(timer);
+    return () => {
+      clearInterval(timer);
+      setProgress(0);
+    };
   }, [mode, totalPages, slideInterval]);
 
+  const activePage = currentPage >= totalPages ? 0 : currentPage;
   const displayedItems =
     mode === "carousel"
-      ? items.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
+      ? items.slice(activePage * itemsPerPage, (activePage + 1) * itemsPerPage)
       : items;
 
   const getActivityBadgeColor = (kegiatan: string) => {

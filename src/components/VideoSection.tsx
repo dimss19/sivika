@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Play, Sparkles, MapPin, Mail, Phone, ExternalLink, Award } from "lucide-react";
+import { Play, Sparkles, Award } from "lucide-react";
 
 export default function VideoSection() {
   return (

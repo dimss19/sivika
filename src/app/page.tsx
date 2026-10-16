@@ -14,11 +14,16 @@ import { CheckCircle2 } from "lucide-react";
 
 export default function HomePage() {
   const [data, setData] = useState<JadwalKunjungan[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [lastUpdated, setLastUpdated] = useState<string>("");
   const [isLive, setIsLive] = useState<boolean>(true);
-  const [isTvMode, setIsTvMode] = useState<boolean>(false);
+  const [isTvMode, setIsTvMode] = useState<boolean>(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("mode") === "tv";
+    }
+    return false;
+  });
   const [selectedJadwal, setSelectedJadwal] = useState<JadwalKunjungan | null>(null);
   const [showSyncNotification, setShowSyncNotification] = useState<boolean>(false);
 
@@ -26,13 +31,11 @@ export default function HomePage() {
   const fetchJadwal = useCallback(async (isManual = false) => {
     if (isManual) setIsRefreshing(true);
     try {
-      // Add timestamp to bypass any browser cache
       const res = await fetch(`/api/jadwal?_t=${Date.now()}`, {
         cache: "no-store",
       });
       const json = await res.json();
       if (json && json.data) {
-        // Check if there was a data update
         setData((prevData) => {
           if (prevData.length > 0 && prevData.length !== json.data.length) {
             setShowSyncNotification(true);
@@ -47,30 +50,25 @@ export default function HomePage() {
       console.error("Gagal sinkronisasi spreadsheet:", err);
       setIsLive(false);
     } finally {
-      setLoading(false);
-      setIsRefreshing(false);
+      if (isManual) setIsRefreshing(false);
     }
   }, []);
 
-  // Initial fetch and automatic background live-sync every 10 seconds!
+  // Automatic background live-sync every 10 seconds without synchronous setState in effect
   useEffect(() => {
-    fetchJadwal();
+    const timer = setTimeout(() => {
+      fetchJadwal();
+    }, 0);
+
     const syncInterval = setInterval(() => {
       fetchJadwal();
-    }, 10000); // Polls Google Sheets every 10s for immediate changes
+    }, 10000);
 
-    return () => clearInterval(syncInterval);
+    return () => {
+      clearTimeout(timer);
+      clearInterval(syncInterval);
+    };
   }, [fetchJadwal]);
-
-  // URL query parameter support: e.g. /?mode=tv
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get("mode") === "tv") {
-        setIsTvMode(true);
-      }
-    }
-  }, []);
 
   // Keyboard shortcut listener
   useEffect(() => {
@@ -84,13 +82,13 @@ export default function HomePage() {
         fetchJadwal(true);
       } else if (e.key === "Escape") {
         setSelectedJadwal(null);
-        if (isTvMode) setIsTvMode(false);
+        setIsTvMode(false);
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [fetchJadwal, isTvMode]);
+  }, [fetchJadwal]);
 
   const todayCount = useMemo(() => {
     return data.filter((item) => item.isToday).length;
@@ -131,7 +129,6 @@ export default function HomePage() {
             onRefresh={() => fetchJadwal(true)}
             isRefreshing={isRefreshing}
             totalSchedule={data.length}
-            lastUpdated={lastUpdated}
             isLive={isLive}
           />
 
@@ -148,8 +145,6 @@ export default function HomePage() {
               items={data}
               onSelectItem={(item) => setSelectedJadwal(item)}
               onOpenTvMode={() => setIsTvMode(true)}
-              isRefreshing={isRefreshing}
-              onRefresh={() => fetchJadwal(true)}
             />
 
             <VideoSection />

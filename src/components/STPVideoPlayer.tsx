@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Play, Sparkles, Building2, Users, Award, ExternalLink } from "lucide-react";
+import { Play, Building2, Users, Award, ExternalLink } from "lucide-react";
 
 interface STPVideoPlayerProps {
   initialVideoUrl?: string;

@@ -1,12 +1,18 @@
 import { NextResponse } from "next/server";
-import { parseCSV, transformRowsToJadwal, JadwalKunjungan } from "@/lib/sheets";
+import { parseCSV, transformRowsToJadwal } from "@/lib/sheets";
 
 // Always fetch live Google Spreadsheet with cache-buster timestamp
-
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const customGid = searchParams.get("gid") || "0";
-  const sheetId = searchParams.get("sheetId") || "1aMlArIv2r6h7evDIJrpTsY2YMrE1NCtQUmf0Q4yZyoI";
+  const rawGid = searchParams.get("gid") || "0";
+  const rawSheetId =
+    searchParams.get("sheetId") || "1aMlArIv2r6h7evDIJrpTsY2YMrE1NCtQUmf0Q4yZyoI";
+
+  // Security allow-list validation to prevent SSRF
+  const sheetId = /^[a-zA-Z0-9_-]{20,60}$/.test(rawSheetId)
+    ? rawSheetId
+    : "1aMlArIv2r6h7evDIJrpTsY2YMrE1NCtQUmf0Q4yZyoI";
+  const customGid = /^[0-9]{1,10}$/.test(rawGid) ? rawGid : "0";
 
   // Cache buster timestamp prevents Google Sheets CDN from returning stale CSV
   const cacheBuster = Date.now();
@@ -24,7 +30,7 @@ export async function GET(request: Request) {
     });
 
     if (!res.ok) {
-      throw new Error(`Google Sheets responded with status: ${res.status} ${res.statusText}`);
+      throw new Error(`Google Sheets responded with status: ${res.status}`);
     }
 
     const csvText = await res.text();
@@ -42,7 +48,8 @@ export async function GET(request: Request) {
       },
       {
         headers: {
-          "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
+          "Cache-Control":
+            "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
           Pragma: "no-cache",
           Expires: "0",
         },
@@ -53,7 +60,7 @@ export async function GET(request: Request) {
     return NextResponse.json(
       {
         success: false,
-        error: error instanceof Error ? error.message : "Gagal memuat spreadsheet",
+        error: "Gagal memuat spreadsheet",
         source: "error",
         count: 0,
         data: [],
