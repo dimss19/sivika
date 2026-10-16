@@ -8,7 +8,7 @@ interface STPVideoPlayerProps {
 }
 
 export default function STPVideoPlayer({
-  initialVideoUrl = "https://www.youtube.com/embed/dQw4w9WgXcQ",
+  initialVideoUrl = "https://www.youtube.com/embed/Psa9J6wWn3Y",
 }: STPVideoPlayerProps) {
   const [videoUrl] = useState<string>(initialVideoUrl);
 
