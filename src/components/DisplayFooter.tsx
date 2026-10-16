@@ -31,19 +31,19 @@ export default function DisplayFooter({
   ];
 
   return (
-    <footer className="w-full bg-slate-900 text-white shrink-0 border-t-2 border-rose-600 flex items-center justify-between text-xs overflow-hidden relative z-20">
+    <footer className="w-full bg-white text-slate-800 shrink-0 border-t-2 border-rose-600 flex items-center justify-between text-xs overflow-hidden relative z-20 shadow-xs">
       {/* Red STP Announcement Badge */}
-      <div className="bg-rose-600 text-white font-extrabold px-5 py-3 flex items-center gap-2 shrink-0 shadow-lg tracking-wider text-xs uppercase">
+      <div className="bg-rose-600 text-white font-extrabold px-4 py-2.5 flex items-center gap-2 shrink-0 shadow-xs tracking-wider text-xs uppercase">
         <Megaphone className="w-4 h-4 text-white animate-bounce" />
         <span>INFO LOBI STP</span>
       </div>
 
       {/* Marquee Ticker */}
-      <div className="flex-1 overflow-hidden whitespace-nowrap py-3 relative">
-        <div className="animate-marquee inline-flex items-center gap-12 font-medium text-slate-200">
+      <div className="flex-1 overflow-hidden whitespace-nowrap py-2.5 relative">
+        <div className="animate-marquee inline-flex items-center gap-12 font-semibold text-slate-800">
           {tickerMessages.concat(tickerMessages).map((msg, idx) => (
             <div key={idx} className="inline-flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-rose-500"></span>
+              <span className="w-2 h-2 rounded-full bg-rose-600" />
               <span>{msg}</span>
             </div>
           ))}
@@ -51,14 +51,14 @@ export default function DisplayFooter({
       </div>
 
       {/* Quick Action Buttons for Operator / TV Kiosk */}
-      <div className="flex items-center gap-1.5 px-4 shrink-0 bg-slate-900 border-l border-slate-800">
+      <div className="flex items-center gap-1.5 px-4 shrink-0 bg-white border-l border-slate-200">
         <button
           onClick={onToggleControls}
           title="Buka Pengaturan Mode Tampilan"
-          className={`p-2 rounded-lg transition-all flex items-center gap-1.5 text-xs font-semibold ${
+          className={`p-2 rounded-xl transition-all flex items-center gap-1.5 text-xs font-bold border ${
             showControls
-              ? "bg-rose-600 text-white"
-              : "bg-slate-800 hover:bg-slate-700 text-slate-300"
+              ? "bg-rose-600 text-white border-rose-600"
+              : "bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200/80"
           }`}
         >
           <Settings2 className="w-4 h-4" />
@@ -68,7 +68,7 @@ export default function DisplayFooter({
         <button
           onClick={toggleFullscreen}
           title="Layar Penuh (F11)"
-          className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition-all"
+          className="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200/80 rounded-xl transition-all"
         >
           <Maximize className="w-4 h-4" />
         </button>

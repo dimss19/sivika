@@ -143,11 +143,24 @@ export default function TVDisplayView({
     }
   };
 
+  const getCategoryBadgeClass = (kategori: string) => {
+    if (kategori === "Kunjungan Industri") {
+      return "bg-emerald-50 text-emerald-700 border-emerald-200/90";
+    }
+    if (kategori === "Pelatihan") {
+      return "bg-amber-50 text-amber-700 border-amber-200/90";
+    }
+    if (kategori === "Kunjungan Kerja") {
+      return "bg-blue-50 text-blue-700 border-blue-200/90";
+    }
+    return "bg-slate-100 text-slate-700 border-slate-200";
+  };
+
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950 text-white flex flex-col justify-between overflow-hidden select-none">
-      {/* 1. TV Display Header */}
-      <header className="bg-white text-slate-900 border-b-2 border-rose-500 px-6 py-3.5 shadow-md flex items-center justify-between shrink-0">
-        {/* Brand */}
+    <div className="fixed inset-0 z-50 bg-slate-50 text-slate-900 flex flex-col justify-between overflow-hidden select-none">
+      {/* 1. TV Display Header (Pristine White) */}
+      <header className="bg-white border-b-2 border-rose-600 px-6 py-3.5 shadow-xs flex items-center justify-between shrink-0 relative z-20">
+        {/* Brand Logo & Title */}
         <div className="flex items-center gap-3.5">
           <div className="relative w-14 h-12 flex items-center justify-center p-1 bg-white rounded-xl border border-slate-200 shadow-xs">
             <Image
@@ -169,14 +182,14 @@ export default function TVDisplayView({
           </div>
         </div>
 
-        {/* Center Live Badge & Mode Indicator */}
+        {/* Center Status Indicators */}
         <div className="hidden lg:flex items-center gap-3">
-          <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl text-xs">
+          <div className="flex items-center gap-2 bg-slate-50 border border-slate-200/90 px-3.5 py-1.5 rounded-xl text-xs">
             <CloudSun className="w-4 h-4 text-amber-500" />
             <span className="font-bold text-slate-700">Surakarta 31°C</span>
           </div>
 
-          <div className="flex items-center gap-2 bg-rose-50 border border-rose-200 px-3 py-1.5 rounded-xl text-xs text-rose-700">
+          <div className="flex items-center gap-2 bg-rose-50 border border-rose-200/80 px-3.5 py-1.5 rounded-xl text-xs text-rose-700">
             <Radio className="w-3.5 h-3.5 animate-pulse text-rose-600" />
             <span className="font-bold">
               {isLive ? "Live Spreadsheet" : "Cache Standby"}
@@ -186,7 +199,7 @@ export default function TVDisplayView({
           </div>
         </div>
 
-        {/* Live Clock & Exit Button */}
+        {/* Live Clock & Date */}
         <div className="flex items-center gap-4">
           <div className="text-right hidden sm:block">
             <div className="text-xs font-bold text-slate-600 flex items-center justify-end gap-1.5">
@@ -207,8 +220,8 @@ export default function TVDisplayView({
         </div>
       </header>
 
-      {/* 2. TV Subheader: Mode Switcher, Zoom Controller, Actions */}
-      <div className="bg-slate-900 border-b border-slate-800 px-6 py-2.5 flex flex-wrap items-center justify-between gap-3 shrink-0">
+      {/* 2. TV Subheader: Mode Switcher, Zoom Controller, Actions (Pristine White) */}
+      <div className="bg-white border-b border-slate-200/90 px-6 py-2.5 flex flex-wrap items-center justify-between gap-3 shrink-0 relative z-10 shadow-xs">
         {/* Mode Selector Tabs */}
         <div className="flex items-center gap-2 text-xs font-bold">
           <button
@@ -216,7 +229,7 @@ export default function TVDisplayView({
             className={`px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 ${
               tvMode === "carousel"
                 ? "bg-rose-600 text-white shadow-sm"
-                : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                : "bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200/80"
             }`}
           >
             <Tv className="w-3.5 h-3.5" />
@@ -228,7 +241,7 @@ export default function TVDisplayView({
             className={`px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 ${
               tvMode === "today"
                 ? "bg-rose-600 text-white shadow-sm"
-                : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                : "bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200/80"
             }`}
           >
             <CalendarDays className="w-3.5 h-3.5" />
@@ -240,7 +253,7 @@ export default function TVDisplayView({
             className={`px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 ${
               tvMode === "split"
                 ? "bg-rose-600 text-white shadow-sm"
-                : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                : "bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200/80"
             }`}
           >
             <Film className="w-3.5 h-3.5" />
@@ -252,7 +265,7 @@ export default function TVDisplayView({
             className={`px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 ${
               tvMode === "all"
                 ? "bg-rose-600 text-white shadow-sm"
-                : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                : "bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200/80"
             }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
@@ -263,31 +276,31 @@ export default function TVDisplayView({
         {/* Right Tools: Zoom Control, Refresh, Fullscreen, Close */}
         <div className="flex items-center gap-2.5">
           {/* Zoom Control */}
-          <div className="flex items-center gap-1 bg-slate-800 p-1 rounded-2xl border border-slate-700">
-            <span className="text-[10px] font-bold text-slate-400 px-2 uppercase">
+          <div className="flex items-center gap-1 bg-slate-50 p-1 rounded-2xl border border-slate-200/90 shadow-xs">
+            <span className="text-[10px] font-bold text-slate-500 px-2 uppercase tracking-wider">
               Zoom:
             </span>
             <button
               onClick={() => setTvZoom((z) => Math.max(75, z - 10))}
               disabled={tvZoom <= 75}
-              className="px-2 py-1 bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold rounded-lg transition-all disabled:opacity-40"
+              className="px-2.5 py-1 bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-lg border border-slate-200/90 transition-all disabled:opacity-40"
             >
               -
             </button>
-            <span className="text-xs font-bold text-white px-2 min-w-[45px] text-center">
+            <span className="text-xs font-bold text-slate-900 px-2 min-w-[45px] text-center">
               {tvZoom}%
             </span>
             <button
               onClick={() => setTvZoom((z) => Math.min(160, z + 10))}
               disabled={tvZoom >= 160}
-              className="px-2 py-1 bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold rounded-lg transition-all disabled:opacity-40"
+              className="px-2.5 py-1 bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-lg border border-slate-200/90 transition-all disabled:opacity-40"
             >
               +
             </button>
             {tvZoom !== 100 && (
               <button
                 onClick={() => setTvZoom(100)}
-                className="text-[10px] font-bold text-rose-400 hover:underline px-1"
+                className="text-[10px] font-bold text-rose-600 hover:underline px-1.5"
               >
                 Reset
               </button>
@@ -297,25 +310,25 @@ export default function TVDisplayView({
           <button
             onClick={onRefresh}
             disabled={isRefreshing}
-            title="Sinkronkan Spreadsheet"
-            className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition-all disabled:opacity-50"
+            title="Sinkronkan Spreadsheet Sekarang"
+            className="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 rounded-xl transition-all disabled:opacity-50"
           >
             <RefreshCw
-              className={`w-4 h-4 ${isRefreshing ? "animate-spin text-rose-500" : ""}`}
+              className={`w-4 h-4 ${isRefreshing ? "animate-spin text-rose-600" : ""}`}
             />
           </button>
 
           <button
             onClick={toggleFullscreen}
             title="Layar Penuh (F11)"
-            className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition-all"
+            className="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 rounded-xl transition-all"
           >
             <Maximize className="w-4 h-4" />
           </button>
 
           <button
             onClick={onCloseTvMode}
-            className="px-3.5 py-2 bg-slate-800 hover:bg-rose-600 text-slate-200 hover:text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all"
+            className="px-4 py-2 bg-slate-100 hover:bg-rose-600 text-slate-700 hover:text-white border border-slate-200 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Kembali ke Web</span>
@@ -323,8 +336,8 @@ export default function TVDisplayView({
         </div>
       </div>
 
-      {/* 3. Main TV Screen Content Body (Scaled by Zoom Level) */}
-      <main className="flex-1 p-6 overflow-hidden flex flex-col justify-between min-h-0 bg-slate-950">
+      {/* 3. Main TV Screen Content Body (Clean White & Slate-50) */}
+      <main className="flex-1 p-6 overflow-hidden flex flex-col justify-between min-h-0 bg-slate-50/70">
         <div
           style={{ zoom: `${tvZoom}%` }}
           className="flex-1 flex flex-col min-h-0 transition-all duration-150 origin-top"
@@ -334,11 +347,11 @@ export default function TVDisplayView({
             <div className="grid grid-cols-12 gap-6 h-full min-h-0">
               <div className="col-span-7 flex flex-col h-full min-h-0">
                 <div className="flex items-center justify-between mb-3 shrink-0">
-                  <h3 className="text-base font-black text-white flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-rose-500" />
+                  <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-rose-600" />
                     <span>Agenda Kunjungan Solo Techno Park</span>
                   </h3>
-                  <span className="text-xs font-bold text-slate-400">
+                  <span className="text-xs font-bold text-slate-500">
                     Menampilkan {displayedItems.length} Agenda
                   </span>
                 </div>
@@ -348,35 +361,41 @@ export default function TVDisplayView({
                     <div
                       key={item.id}
                       onClick={() => onSelectItem(item)}
-                      className="bg-slate-900 border border-slate-800 hover:border-rose-500/80 rounded-2xl p-4 shadow-lg flex flex-col justify-between cursor-pointer transition-all hover:bg-slate-850 group"
+                      className="bg-white border border-slate-200/90 hover:border-rose-400 rounded-2xl p-5 shadow-sm hover:shadow-md flex flex-col justify-between cursor-pointer transition-all relative overflow-hidden group"
                     >
+                      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-600 to-rose-500" />
+
                       <div>
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="bg-rose-600/20 text-rose-400 border border-rose-500/30 text-[11px] font-black px-2.5 py-0.5 rounded-lg flex items-center gap-1 font-mono">
-                            <Clock className="w-3 h-3" />
+                        <div className="flex items-center justify-between gap-2 mb-2">
+                          <span className="bg-rose-50 text-rose-700 border border-rose-200/80 text-[11px] font-black px-2.5 py-0.5 rounded-lg flex items-center gap-1 font-mono">
+                            <Clock className="w-3 h-3 text-rose-600" />
                             {item.timeFormatted}
                           </span>
-                          <span className="text-[10px] font-bold text-slate-400 uppercase bg-slate-800 px-2 py-0.5 rounded">
+                          <span
+                            className={`text-[10px] font-bold px-2 py-0.5 rounded border uppercase tracking-wider ${getCategoryBadgeClass(
+                              item.kategori
+                            )}`}
+                          >
                             {item.kegiatan}
                           </span>
                         </div>
 
-                        <h4 className="text-base font-extrabold text-white group-hover:text-rose-400 transition-colors line-clamp-2">
+                        <h4 className="text-base font-black text-slate-900 group-hover:text-rose-600 transition-colors line-clamp-1 mt-1">
                           {item.instansi}
                         </h4>
 
-                        <p className="text-xs text-slate-400 mt-1 flex items-center gap-1 font-semibold">
+                        <p className="text-xs text-slate-500 mt-1 flex items-center gap-1 font-semibold">
                           <Calendar className="w-3.5 h-3.5 text-rose-500" />
                           <span>{item.dateFormatted || item.rawDateTime}</span>
                         </p>
                       </div>
 
-                      <div className="pt-3 mt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
-                        <span className="flex items-center gap-1 text-slate-300 font-semibold truncate max-w-[150px]">
-                          <MapPin className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+                      <div className="pt-3.5 mt-3.5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600">
+                        <span className="flex items-center gap-1 text-slate-800 font-bold truncate max-w-[150px]">
+                          <MapPin className="w-3.5 h-3.5 text-rose-600 shrink-0" />
                           {item.tempat}
                         </span>
-                        <span className="text-rose-400 font-bold flex items-center gap-1">
+                        <span className="text-rose-600 font-extrabold flex items-center gap-1 group-hover:underline">
                           <Eye className="w-3.5 h-3.5" />
                           Detail
                         </span>
@@ -395,84 +414,91 @@ export default function TVDisplayView({
             <div className="flex-1 flex flex-col min-h-0 justify-between">
               <div className="flex items-center justify-between mb-3 shrink-0">
                 <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse" />
-                  <h3 className="text-lg font-black text-white">
+                  <span className="w-2.5 h-2.5 rounded-full bg-rose-600 animate-pulse" />
+                  <h3 className="text-lg font-black text-slate-900">
                     {tvMode === "today"
                       ? "Agenda Kunjungan Hari Ini"
                       : "Display Digital Signage Agenda Kunjungan"}
                   </h3>
-                  <span className="bg-rose-950 text-rose-400 border border-rose-800 text-xs font-bold px-2.5 py-0.5 rounded-full ml-1">
+                  <span className="bg-rose-100 text-rose-800 text-xs font-bold px-2.5 py-0.5 rounded-full ml-1">
                     {activeItems.length} Agenda
                   </span>
                 </div>
 
                 {tvMode === "carousel" && (
-                  <span className="text-xs font-bold text-slate-400 flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                  <span className="text-xs font-bold text-slate-500 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
                     Auto-Slide ({slideInterval}s)
                   </span>
                 )}
               </div>
 
-              {/* Grid of 6 Cards */}
+              {/* Grid of 6 Cards - Crisp White & Spacious */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 flex-1 min-h-0 overflow-y-auto pr-1">
                 {displayedItems.map((item) => (
                   <div
                     key={item.id}
                     onClick={() => onSelectItem(item)}
-                    className="bg-slate-900 border border-slate-800 hover:border-rose-500 rounded-3xl p-6 shadow-xl flex flex-col justify-between cursor-pointer transition-all hover:bg-slate-850 group relative overflow-hidden"
+                    className="bg-white border border-slate-200/90 hover:border-rose-400 rounded-3xl p-6 shadow-sm hover:shadow-lg flex flex-col justify-between cursor-pointer transition-all duration-200 relative overflow-hidden group"
                   >
-                    <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-red-600 to-rose-500" />
+                    <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-red-600 via-rose-500 to-red-600" />
 
                     <div>
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="bg-rose-500/15 text-rose-400 border border-rose-500/30 font-mono text-xs font-black px-3 py-1 rounded-xl flex items-center gap-1.5">
-                          <Clock className="w-3.5 h-3.5" />
+                      {/* Top Row: Time & Activity */}
+                      <div className="flex items-center justify-between gap-2 mb-2">
+                        <span className="bg-rose-50 text-rose-700 border border-rose-200/80 font-mono text-xs font-black px-3 py-1 rounded-xl flex items-center gap-1.5 shadow-2xs">
+                          <Clock className="w-3.5 h-3.5 text-rose-600" />
                           {item.timeFormatted}
                         </span>
 
                         <div className="flex items-center gap-1.5">
                           {item.isToday && (
-                            <span className="bg-red-600 text-white text-[10px] font-black uppercase px-2 py-0.5 rounded-md animate-pulse">
+                            <span className="bg-red-600 text-white text-[10px] font-black uppercase px-2 py-0.5 rounded-md shadow-xs">
                               Hari Ini
                             </span>
                           )}
-                          <span className="text-[10px] font-bold text-slate-300 uppercase bg-slate-800 px-2 py-0.5 rounded-md border border-slate-700">
+                          <span
+                            className={`text-[10px] font-bold px-2.5 py-0.5 rounded-lg border uppercase tracking-wider ${getCategoryBadgeClass(
+                              item.kategori
+                            )}`}
+                          >
                             {item.kegiatan}
                           </span>
                         </div>
                       </div>
 
-                      <h4 className="text-xl font-black text-white group-hover:text-rose-400 transition-colors leading-snug mb-2">
+                      {/* Institution Name */}
+                      <h4 className="text-lg sm:text-xl font-black text-slate-900 group-hover:text-rose-600 transition-colors leading-tight line-clamp-1 mt-2">
                         {item.instansi}
                       </h4>
 
-                      <p className="text-xs font-semibold text-slate-400 mb-4 flex items-center gap-1.5">
+                      {/* Date */}
+                      <p className="text-xs font-semibold text-slate-500 mt-1.5 flex items-center gap-1.5">
                         <Calendar className="w-3.5 h-3.5 text-rose-500 shrink-0" />
                         <span>{item.dateFormatted || item.rawDateTime}</span>
                       </p>
                     </div>
 
-                    <div className="pt-4 border-t border-slate-800 grid grid-cols-2 gap-2 text-xs text-slate-300">
-                      <div className="flex items-center gap-1.5 font-semibold text-white">
-                        <MapPin className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+                    {/* Bottom Metadata & Detail Action */}
+                    <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+                      <div className="flex items-center gap-1.5 font-bold text-slate-800 truncate max-w-[200px]">
+                        <MapPin className="w-4 h-4 text-rose-600 shrink-0" />
                         <span className="truncate">{item.tempat}</span>
                       </div>
 
-                      <div className="flex items-center gap-1.5 justify-end font-semibold text-slate-400">
-                        <Users className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                        <span>
-                          {item.jumlahPeserta && item.jumlahPeserta !== "-"
-                            ? `${item.jumlahPeserta} Peserta`
-                            : "Rombongan"}
+                      <div className="flex items-center gap-3">
+                        <span className="text-slate-500 font-semibold flex items-center gap-1">
+                          <Users className="w-3.5 h-3.5 text-slate-400" />
+                          <span>
+                            {item.jumlahPeserta && item.jumlahPeserta !== "-"
+                              ? `${item.jumlahPeserta}`
+                              : "Rombongan"}
+                          </span>
                         </span>
-                      </div>
 
-                      <div className="text-[11px] text-slate-400 col-span-2 pt-1 flex items-center justify-between">
-                        <span>PIC: {item.pic}</span>
-                        <span className="text-rose-400 font-bold flex items-center gap-1">
-                          <Eye className="w-3 h-3" />
-                          Lihat Detail
+                        <span className="px-3 py-1 bg-rose-50 group-hover:bg-rose-600 text-rose-700 group-hover:text-white font-extrabold rounded-lg text-xs transition-all flex items-center gap-1 shadow-2xs">
+                          <Eye className="w-3.5 h-3.5" />
+                          <span>Detail</span>
                         </span>
                       </div>
                     </div>
@@ -483,76 +509,72 @@ export default function TVDisplayView({
           )}
         </div>
 
-        {/* Carousel Progress Bar */}
+        {/* 4. Elegant Pagination Bar (Clean, no 213 dots!) */}
         {tvMode === "carousel" && totalPages > 1 && (
-          <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs font-bold text-slate-400 shrink-0">
+          <div className="mt-4 pt-3.5 border-t border-slate-200/90 flex items-center justify-between text-xs font-bold text-slate-600 shrink-0 bg-white/90 px-5 py-2.5 rounded-2xl border border-slate-200 shadow-xs">
+            {/* Left Page Info */}
             <div className="flex items-center gap-2">
-              <span>
-                Halaman {currentPage + 1} dari {totalPages}
+              <span className="text-slate-800 font-extrabold">
+                Halaman {activePage + 1}
               </span>
-              <div className="flex gap-1.5 ml-2">
-                {Array.from({ length: totalPages }).map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => {
-                      setCurrentPage(i);
-                      setProgress(0);
-                    }}
-                    className={`h-2 rounded-full transition-all ${
-                      currentPage === i ? "w-6 bg-rose-500" : "w-2 bg-slate-800"
-                    }`}
-                  />
-                ))}
-              </div>
+              <span className="text-slate-400">dari {totalPages}</span>
             </div>
 
+            {/* Center Slide Timer Progress */}
             <div className="flex items-center gap-3">
-              <div className="w-40 h-2 bg-slate-800 rounded-full overflow-hidden border border-slate-700">
+              <span className="text-[11px] text-slate-400 uppercase font-semibold hidden sm:inline">
+                Slide Berikutnya:
+              </span>
+              <div className="w-48 sm:w-64 h-2 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
                 <div
                   className="h-full bg-gradient-to-r from-red-600 to-rose-500 transition-all duration-100"
                   style={{ width: `${progress}%` }}
                 />
               </div>
+            </div>
 
-              <div className="flex items-center gap-1">
-                <button
-                  onClick={() => {
-                    setCurrentPage((p) => (p > 0 ? p - 1 : totalPages - 1));
-                    setProgress(0);
-                  }}
-                  className="p-1 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-300"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => {
-                    setCurrentPage((p) => (p + 1) % totalPages);
-                    setProgress(0);
-                  }}
-                  className="p-1 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-300"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
+            {/* Right Navigation Buttons */}
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={() => {
+                  setCurrentPage((p) => (p > 0 ? p - 1 : totalPages - 1));
+                  setProgress(0);
+                }}
+                className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-slate-700 flex items-center gap-1 transition-all"
+              >
+                <ChevronLeft className="w-4 h-4" />
+                <span className="hidden sm:inline">Sebelumnya</span>
+              </button>
+              <button
+                onClick={() => {
+                  setCurrentPage((p) => (p + 1) % totalPages);
+                  setProgress(0);
+                }}
+                className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-slate-700 flex items-center gap-1 transition-all"
+              >
+                <span className="hidden sm:inline">Berikutnya</span>
+                <ChevronRight className="w-4 h-4" />
+              </button>
             </div>
           </div>
         )}
       </main>
 
-      <footer className="bg-slate-900 border-t-2 border-rose-600 px-6 py-2.5 flex items-center justify-between text-xs shrink-0 overflow-hidden">
-        <span className="bg-rose-600 text-white font-black px-3 py-1 rounded mr-4 shrink-0 uppercase tracking-wider text-[11px] z-10 shadow-sm">
+      {/* 5. TV Bottom Marquee Footer (Pristine White with Red Tag) */}
+      <footer className="bg-white border-t-2 border-rose-600 px-6 py-2.5 flex items-center justify-between text-xs shrink-0 overflow-hidden shadow-xs relative z-20">
+        <span className="bg-rose-600 text-white font-extrabold px-3.5 py-1.5 rounded-lg mr-4 shrink-0 uppercase tracking-wider text-[11px] shadow-xs">
           INFO RESEPSIONIS
         </span>
         <div className="flex-1 overflow-hidden whitespace-nowrap relative">
-          <div className="animate-marquee inline-flex items-center gap-12 font-semibold text-slate-200">
+          <div className="animate-marquee inline-flex items-center gap-12 font-semibold text-slate-800">
             <span>
-              Selamat datang di Solo Techno Park (STP). Bagi rombongan tamu kunjungan
+              Selamat datang di Solo Techno Park. Bagi rombongan tamu kunjungan
               industri dan kedinasan, harap melapor ke Petugas Resepsionis Gedung
               Utama sebelum memasuki ruangan acara. Area parkir bus dan kendaraan
               tamu tersedia di Area Parkir Timur STP.
             </span>
             <span>
-              Data agenda kunjungan diperbarui secara langsung (real-time) melalui integrasi Google Spreadsheet SIVIKA.
+              Data agenda kunjungan diperbarui secara langsung (real-time) melalui integrasi Google Spreadsheet SIVIKA Solo Techno Park.
             </span>
           </div>
         </div>

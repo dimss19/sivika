@@ -207,25 +207,10 @@ export default function JadwalGrid({
         <div className="mt-4 pt-3 border-t border-slate-200/80 flex items-center justify-between shrink-0 bg-white/70 backdrop-blur-xs px-4 py-2.5 rounded-2xl border">
           {/* Page Indicators */}
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-slate-700">
-              Halaman {currentPage + 1} dari {totalPages}
+            <span className="text-xs font-bold text-slate-800">
+              Halaman {activePage + 1}
             </span>
-            <div className="flex gap-1.5 ml-2">
-              {Array.from({ length: totalPages }).map((_, pIdx) => (
-                <button
-                  key={pIdx}
-                  onClick={() => {
-                    setCurrentPage(pIdx);
-                    setProgress(0);
-                  }}
-                  className={`h-2 rounded-full transition-all ${
-                    currentPage === pIdx
-                      ? "w-7 bg-rose-600"
-                      : "w-2 bg-slate-300 hover:bg-slate-400"
-                  }`}
-                />
-              ))}
-            </div>
+            <span className="text-xs text-slate-400">dari {totalPages}</span>
           </div>
 
           {/* Progress Bar of next slide */}

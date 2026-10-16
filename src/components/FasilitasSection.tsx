@@ -8,6 +8,7 @@ import {
   Sparkles,
   Flame,
   Gamepad2,
+  ChevronRight,
 } from "lucide-react";
 
 export default function FasilitasSection() {
@@ -124,9 +125,7 @@ export default function FasilitasSection() {
 
                 <div className="pt-5 mt-5 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-slate-500">
                   <span>{f.stats}</span>
-                  <span className="text-rose-600 group-hover:translate-x-1 transition-transform">
-                    →
-                  </span>
+                  <ChevronRight className="w-4 h-4 text-rose-600 group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
             );
