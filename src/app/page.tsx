@@ -11,6 +11,7 @@ import WebFooter from "@/components/WebFooter";
 import TVDisplayView from "@/components/TVDisplayView";
 import JadwalDetailModal from "@/components/JadwalDetailModal";
 import { JadwalKunjungan } from "@/lib/sheets";
+import { requestAppFullscreen, exitAppFullscreen } from "@/lib/fullscreen";
 
 function HomeContent() {
   const searchParams = useSearchParams();
@@ -29,11 +30,13 @@ function HomeContent() {
   const handleOpenTvMode = useCallback(() => {
     setTvModeOverride(true);
     router.push("/?mode=tv", { scroll: false });
+    requestAppFullscreen();
   }, [router]);
 
   const handleCloseTvMode = useCallback(() => {
     setTvModeOverride(false);
     router.push("/", { scroll: false });
+    exitAppFullscreen();
   }, [router]);
 
   // Fetch spreadsheet data from API for manual refresh

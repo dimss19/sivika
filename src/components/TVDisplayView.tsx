@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -14,6 +14,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Maximize,
+  Minimize,
   ArrowLeft,
   RefreshCw,
   CloudSun,
@@ -21,6 +22,7 @@ import {
   LayoutGrid,
 } from "lucide-react";
 import { JadwalKunjungan } from "@/lib/sheets";
+import { isFullscreenActive, toggleAppFullscreen } from "@/lib/fullscreen";
 import STPVideoPlayer from "./STPVideoPlayer";
 
 interface TVDisplayViewProps {
@@ -230,15 +232,46 @@ export default function TVDisplayView({
     (activePage + 1) * itemsPerPage
   );
 
-  const toggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(() => {});
-    } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen().catch(() => {});
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+
+  useEffect(() => {
+    const updateFsState = () => {
+      setIsFullscreen(isFullscreenActive());
+    };
+
+    updateFsState();
+
+    document.addEventListener("fullscreenchange", updateFsState);
+    document.addEventListener("webkitfullscreenchange", updateFsState);
+    document.addEventListener("mozfullscreenchange", updateFsState);
+    document.addEventListener("MSFullscreenChange", updateFsState);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", updateFsState);
+      document.removeEventListener("webkitfullscreenchange", updateFsState);
+      document.removeEventListener("mozfullscreenchange", updateFsState);
+      document.removeEventListener("MSFullscreenChange", updateFsState);
+    };
+  }, []);
+
+  const toggleFullscreen = useCallback(async () => {
+    await toggleAppFullscreen();
+    setIsFullscreen(isFullscreenActive());
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+        return;
       }
-    }
-  };
+      if (e.key === "f" || e.key === "F") {
+        e.preventDefault();
+        toggleFullscreen();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [toggleFullscreen]);
 
   // Touch swipe gesture handlers (Swipe left for next page, swipe right for prev page)
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -396,11 +429,21 @@ export default function TVDisplayView({
               />
             </button>
             <button
+              type="button"
               onClick={toggleFullscreen}
-              title="Layar Penuh TV (F11)"
-              className="p-2 sm:p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl transition-all"
+              title={isFullscreen ? "Keluar Layar Penuh (Esc / F11)" : "Layar Penuh TV (F11 / F)"}
+              aria-label={isFullscreen ? "Keluar Layar Penuh" : "Layar Penuh TV"}
+              className={`p-2 sm:p-2.5 rounded-xl transition-all ${
+                isFullscreen
+                  ? "bg-rose-50 text-rose-600 border border-rose-200 hover:bg-rose-100"
+                  : "bg-slate-100 hover:bg-slate-200 text-slate-600"
+              }`}
             >
-              <Maximize className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              {isFullscreen ? (
+                <Minimize className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              ) : (
+                <Maximize className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              )}
             </button>
             <button
               onClick={onCloseTvMode}
