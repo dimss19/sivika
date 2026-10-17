@@ -60,9 +60,7 @@ export default function ProfileHero({
                 onClick={onOpenTvMode}
                 className="px-6 py-3.5 bg-slate-950 hover:bg-black text-white font-extrabold rounded-2xl text-sm shadow-md hover:shadow-xl hover:scale-[1.02] active:scale-95 flex items-center gap-2.5 transition-all duration-200 border border-slate-800 group"
               >
-                <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
-                <Tv className="w-5 h-5 text-slate-300 group-hover:rotate-6 transition-transform duration-300" />
-                <span>Buka Mode Display TV Lobi</span>
+                <span>Buka Mode Display</span>
                 <ArrowRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1.5 transition-transform duration-200" />
               </button>
 
