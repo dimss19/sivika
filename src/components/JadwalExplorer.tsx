@@ -58,15 +58,19 @@ export default function JadwalExplorer({
       );
     }
 
-    // Sort order: newest (default: 2026-2027 first), upcoming, or oldest (2024 first)
+    const now = new Date();
+    const todayIso = now.toISOString().split("T")[0];
+
+    // Sort order:
+    // newest: Data terbaru yang TIDAK melebihi hari ini (<= hari ini, descending timestamp)
+    // upcoming: Agenda mendatang (> hari ini, ascending timestamp)
+    // oldest: Agenda dari urutan awal (2024, ascending timestamp)
     if (sortOrder === "newest") {
+      result = result.filter((item) => !item.dateIso || item.dateIso <= todayIso);
       result.sort((a, b) => b.timestamp - a.timestamp);
     } else if (sortOrder === "upcoming") {
-      result.sort((a, b) => {
-        if (a.isUpcoming && !b.isUpcoming) return -1;
-        if (!a.isUpcoming && b.isUpcoming) return 1;
-        return a.timestamp - b.timestamp;
-      });
+      result = result.filter((item) => item.dateIso && item.dateIso > todayIso);
+      result.sort((a, b) => a.timestamp - b.timestamp);
     } else if (sortOrder === "oldest") {
       result.sort((a, b) => a.timestamp - b.timestamp);
     }
@@ -196,7 +200,7 @@ export default function JadwalExplorer({
                       ? "bg-white text-slate-900 shadow-xs font-black"
                       : "text-slate-600 hover:text-slate-900 font-semibold"
                   }`}
-                  title="Tampilkan agenda terbaru (2026 - 2027) terlebih dahulu"
+                  title="Tampilkan agenda terbaru s/d hari ini"
                 >
                   Terbaru
                 </button>

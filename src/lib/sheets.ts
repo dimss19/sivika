@@ -236,8 +236,23 @@ export function transformRowsToJadwal(rows: string[][]): JadwalKunjungan[] {
     });
   }
 
-  // Ensure default list is sorted from newest to oldest date (descending timestamp)
-  list.sort((a, b) => b.timestamp - a.timestamp);
+  // Ensure data does not exceed today by default:
+  // Sort items on/before today from newest to oldest, followed by future items (nearest first)
+  const now = new Date();
+  const todayIso = now.toISOString().split("T")[0];
+
+  list.sort((a, b) => {
+    const aIsFuture = a.dateIso && a.dateIso > todayIso;
+    const bIsFuture = b.dateIso && b.dateIso > todayIso;
+
+    if (!aIsFuture && !bIsFuture) {
+      return b.timestamp - a.timestamp;
+    }
+    if (aIsFuture && bIsFuture) {
+      return a.timestamp - b.timestamp;
+    }
+    return aIsFuture ? 1 : -1;
+  });
 
   return list;
 }
