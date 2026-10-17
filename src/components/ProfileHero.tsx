@@ -8,9 +8,7 @@ import {
   Users,
   ShieldCheck,
   ArrowRight,
-  ExternalLink,
 } from "lucide-react";
-import { SPREADSHEET_URL } from "@/lib/sheets";
 
 interface ProfileHeroProps {
   onOpenTvMode: () => void;
@@ -53,7 +51,7 @@ export default function ProfileHero({
             <p className="text-base sm:text-lg text-slate-600 font-medium leading-relaxed max-w-2xl">
               Platform transparansi jadwal kunjungan industri, studi komparatif, dan
               agenda pelatihan vokasi terpadu di Solo Techno Park yang tersinkronisasi
-              langsung dengan Google Spreadsheet secara *real-time*.
+              secara langsung dan *real-time*.
             </p>
 
             {/* Action Buttons */}
@@ -75,23 +73,13 @@ export default function ProfileHero({
                 <Calendar className="w-4 h-4 text-slate-600" />
                 <span>Jelajahi Jadwal ({totalSchedule ? totalSchedule.toLocaleString("id-ID") : "1.278"})</span>
               </a>
-
-              <a
-                href={SPREADSHEET_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-3.5 bg-slate-100 hover:bg-slate-200 hover:scale-[1.02] active:scale-95 text-slate-700 font-semibold rounded-2xl text-xs transition-all duration-200 flex items-center gap-1.5"
-              >
-                <ExternalLink className="w-3.5 h-3.5" />
-                <span>Google Spreadsheet</span>
-              </a>
             </div>
 
             {/* Features check */}
             <div className="pt-4 flex flex-wrap items-center gap-6 text-xs font-semibold text-slate-600">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-slate-900" />
-                <span>Otomatis Sinkron Spreadsheet</span>
+                <span>Pembaruan Agenda Terintegrasi</span>
               </div>
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-slate-900" />
@@ -119,7 +107,7 @@ export default function ProfileHero({
                   Agenda Kunjungan
                 </p>
                 <p className="text-[11px] text-slate-400 mt-0.5">
-                  Tercatat di basis data spreadsheet
+                  Tercatat di sistem basis data terpadu
                 </p>
               </div>
             </div>

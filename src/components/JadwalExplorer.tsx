@@ -10,10 +10,9 @@ import {
   ChevronLeft,
   ChevronRight,
   Tv,
-  FileSpreadsheet,
   ArrowUpDown,
 } from "lucide-react";
-import { JadwalKunjungan, SPREADSHEET_URL } from "@/lib/sheets";
+import { JadwalKunjungan } from "@/lib/sheets";
 
 interface JadwalExplorerProps {
   items: JadwalKunjungan[];
@@ -33,7 +32,7 @@ export default function JadwalExplorer({
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 12;
 
-  // Tabs & Sort filtering for 100% genuine spreadsheet navigation
+  // Tabs & Sort filtering for genuine agenda database navigation
   const filteredItems = useMemo(() => {
     let result = [...items];
 
@@ -101,8 +100,7 @@ export default function JadwalExplorer({
               Eksplorasi Agenda Kunjungan STP
             </h2>
             <p className="text-sm sm:text-base text-slate-600 max-w-2xl mt-1.5 font-medium">
-              Data terhubung langsung dan tersinkronisasi otomatis dari Google
-              Spreadsheet resmi Solo Techno Park.
+              Data agenda kunjungan resmi Solo Techno Park yang tersinkronisasi secara otomatis dan terintegrasi secara real-time.
             </p>
           </div>
 
@@ -115,16 +113,6 @@ export default function JadwalExplorer({
               <Tv className="w-4 h-4 text-slate-300" />
               <span>Buka Display TV Layar Penuh</span>
             </button>
-
-            <a
-              href={SPREADSHEET_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-3 bg-white border border-slate-200 hover:border-slate-300 text-slate-700 rounded-2xl shadow-xs transition-all"
-              title="Buka Google Spreadsheet"
-            >
-              <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
-            </a>
           </div>
         </div>
 

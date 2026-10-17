@@ -40,7 +40,7 @@ export async function GET(request: Request) {
     return NextResponse.json(
       {
         success: true,
-        source: "live_google_sheets",
+        source: "internal_system",
         count: jadwal.length,
         timestamp: cacheBuster,
         data: jadwal,

@@ -11,9 +11,8 @@ import {
   FileText,
   Building,
   CheckCircle2,
-  ExternalLink,
 } from "lucide-react";
-import { JadwalKunjungan, SPREADSHEET_URL } from "@/lib/sheets";
+import { JadwalKunjungan } from "@/lib/sheets";
 
 interface JadwalDetailModalProps {
   jadwal: JadwalKunjungan | null;
@@ -170,17 +169,7 @@ export default function JadwalDetailModal({
         </div>
 
         {/* Modal Footer Actions */}
-        <div className="bg-slate-50 px-6 py-4 border-t border-slate-100 flex items-center justify-between">
-          <a
-            href={SPREADSHEET_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs font-bold text-slate-600 hover:text-slate-950 flex items-center gap-1.5"
-          >
-            <ExternalLink className="w-4 h-4 text-slate-400" />
-            <span>Lihat Baris di Spreadsheet</span>
-          </a>
-
+        <div className="bg-slate-50 px-6 py-4 border-t border-slate-100 flex items-center justify-end">
           <button
             onClick={onClose}
             className="px-6 py-2.5 bg-slate-900 hover:bg-black text-white font-bold rounded-xl text-xs transition-all shadow-xs"

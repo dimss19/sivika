@@ -2,10 +2,10 @@
 
 import React from "react";
 import Image from "next/image";
-import { MapPin, Mail, Phone, ExternalLink } from "lucide-react";
-import { SPREADSHEET_URL } from "@/lib/sheets";
+import { MapPin, Mail, Phone } from "lucide-react";
 
 export default function WebFooter() {
+
   return (
     <footer id="kontak" className="bg-white text-slate-800 border-t border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -68,17 +68,6 @@ export default function WebFooter() {
               <li>
                 <a href="#video" className="hover:text-slate-950 transition-colors">
                   Video Profil Resmi
-                </a>
-              </li>
-              <li>
-                <a
-                  href={SPREADSHEET_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-slate-950 transition-colors flex items-center gap-1 text-slate-800 font-bold"
-                >
-                  <span>Google Spreadsheet Jadwal</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
                 </a>
               </li>
             </ul>

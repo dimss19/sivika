@@ -9,7 +9,6 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import { SPREADSHEET_URL } from "@/lib/sheets";
 
 interface WebNavbarProps {
   onOpenTvMode: () => void;
@@ -161,14 +160,6 @@ export default function WebNavbar({
             className="block px-3 py-2 rounded-xl hover:bg-slate-50"
           >
             Video Profil STP
-          </a>
-          <a
-            href={SPREADSHEET_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block px-3 py-2 rounded-xl hover:bg-slate-50 text-slate-500"
-          >
-            Buka Google Spreadsheet
           </a>
         </div>
       )}

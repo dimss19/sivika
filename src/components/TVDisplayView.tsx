@@ -714,8 +714,8 @@ export default function TVDisplayView({
               Park.
             </span>
             <span>
-              Data agenda diperbarui secara berkala dan terhubung langsung dengan
-              Google Spreadsheet SIVIKA Solo Techno Park.
+              Data agenda diperbarui secara berkala dan tersinkronisasi otomatis pada
+              Sistem Informasi Digital Signage SIVIKA Solo Techno Park.
             </span>
           </div>
         </div>
