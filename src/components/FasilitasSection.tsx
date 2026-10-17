@@ -101,14 +101,17 @@ export default function FasilitasSection() {
             return (
               <div
                 key={f.id}
-                className="bg-white rounded-3xl p-6 border border-slate-200/90 hover:border-slate-400 shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-between group"
+                className="bg-white rounded-3xl p-6 border border-slate-200/90 hover:border-slate-400 shadow-2xs hover:shadow-xl hover:-translate-y-2 transition-all duration-300 ease-out flex flex-col justify-between group relative overflow-hidden"
               >
+                {/* Top hairline accent bar on hover */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-transparent group-hover:bg-rose-600 transition-colors duration-300" />
+
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <div className="p-3 bg-slate-100 text-slate-900 rounded-2xl group-hover:bg-slate-900 group-hover:text-white transition-all shadow-2xs">
+                    <div className="p-3 bg-slate-100 text-slate-900 rounded-2xl group-hover:bg-slate-950 group-hover:text-white group-hover:scale-110 transition-all duration-300 shadow-2xs">
                       <Icon className="w-6 h-6" />
                     </div>
-                    <span className="text-[11px] font-extrabold px-3 py-1 rounded-full bg-slate-100 text-slate-700">
+                    <span className="text-[11px] font-extrabold px-3 py-1 rounded-full bg-slate-100 text-slate-700 group-hover:bg-rose-50 group-hover:text-rose-700 transition-colors">
                       {f.badge}
                     </span>
                   </div>
@@ -116,7 +119,7 @@ export default function FasilitasSection() {
                   <span className="text-[11px] font-bold text-slate-500 tracking-wider uppercase block mb-1">
                     {f.category}
                   </span>
-                  <h3 className="text-lg font-black text-slate-950 group-hover:text-slate-900 transition-colors">
+                  <h3 className="text-lg font-black text-slate-950 group-hover:text-rose-600 transition-colors duration-200">
                     {f.name}
                   </h3>
                   <p className="text-xs text-slate-600 leading-relaxed mt-2 font-medium">
@@ -126,7 +129,7 @@ export default function FasilitasSection() {
 
                 <div className="pt-5 mt-5 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-slate-500">
                   <span>{f.stats}</span>
-                  <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-rose-600 group-hover:translate-x-1 transition-all" />
+                  <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-rose-600 group-hover:translate-x-1.5 transition-all duration-200" />
                 </div>
               </div>
             );

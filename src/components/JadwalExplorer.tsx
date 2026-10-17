@@ -248,7 +248,7 @@ export default function JadwalExplorer({
                     {paginatedItems.map((item) => (
                       <tr
                         key={item.id}
-                        className="hover:bg-slate-50 transition-colors group cursor-pointer"
+                        className="hover:bg-slate-50/90 transition-colors duration-150 group cursor-pointer border-b border-slate-100"
                         onClick={() => onSelectItem(item)}
                       >
                         <td className="py-4 px-6 font-semibold whitespace-nowrap">
@@ -261,12 +261,12 @@ export default function JadwalExplorer({
                           </div>
                         </td>
 
-                        <td className="py-4 px-6 font-extrabold text-slate-900 text-sm group-hover:text-slate-950 transition-colors">
+                        <td className="py-4 px-6 font-extrabold text-slate-900 text-sm group-hover:text-rose-600 transition-colors duration-150">
                           <div className="flex items-center gap-2">
                             <span>{item.instansi}</span>
                             {item.isToday && (
-                              <span className="bg-slate-900 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded flex items-center gap-1">
-                                <span className="w-1 h-1 rounded-full bg-rose-500" />
+                              <span className="bg-rose-600 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded flex items-center gap-1 animate-pulse">
+                                <span className="w-1 h-1 rounded-full bg-white" />
                                 Hari Ini
                               </span>
                             )}
@@ -274,14 +274,14 @@ export default function JadwalExplorer({
                         </td>
 
                         <td className="py-4 px-6 font-medium text-slate-600">
-                          <span className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md font-semibold text-[11px]">
+                          <span className="bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg font-semibold text-[11px] group-hover:bg-slate-200 transition-colors">
                             {item.kegiatan}
                           </span>
                         </td>
 
                         <td className="py-4 px-6 font-semibold text-slate-800">
                           <div className="flex items-center gap-1.5">
-                            <MapPin className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                            <MapPin className="w-3.5 h-3.5 text-slate-500 shrink-0 group-hover:text-rose-600 transition-colors" />
                             <span>{item.tempat}</span>
                           </div>
                         </td>
@@ -302,7 +302,7 @@ export default function JadwalExplorer({
                               e.stopPropagation();
                               onSelectItem(item);
                             }}
-                            className="px-3 py-1.5 bg-slate-100 hover:bg-slate-900 text-slate-800 hover:text-white font-bold rounded-xl text-xs transition-all flex items-center gap-1 mx-auto"
+                            className="px-3.5 py-1.5 bg-slate-100 group-hover:bg-slate-950 text-slate-800 group-hover:text-white font-bold rounded-xl text-xs transition-all duration-200 flex items-center gap-1 mx-auto hover:scale-105 active:scale-95"
                           >
                             <Eye className="w-3.5 h-3.5" />
                             <span>Tampilkan</span>
@@ -321,22 +321,18 @@ export default function JadwalExplorer({
                 <div
                   key={item.id}
                   onClick={() => onSelectItem(item)}
-                  className={`bg-white rounded-3xl p-6 border transition-all duration-200 cursor-pointer shadow-2xs hover:shadow-md flex flex-col justify-between group ${
-                    item.isToday
-                      ? "border-2 border-slate-900"
-                      : "border-slate-200/90 hover:border-slate-400"
-                  }`}
+                  className="bg-white rounded-3xl p-6 border border-slate-200/90 hover:border-slate-400 shadow-2xs hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 ease-out cursor-pointer flex flex-col justify-between group border-t-4 border-t-slate-900 hover:border-t-rose-600"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-3">
-                      <span className="bg-slate-100 text-slate-800 text-xs font-bold px-3 py-1 rounded-xl flex items-center gap-1 font-mono">
+                      <span className="bg-slate-100 text-slate-800 text-xs font-bold px-3 py-1 rounded-xl flex items-center gap-1 font-mono group-hover:bg-slate-200 transition-colors">
                         <Clock className="w-3.5 h-3.5 text-slate-600" />
                         <span>{item.timeFormatted}</span>
                       </span>
                       <div className="flex items-center gap-1.5">
                         {item.isToday && (
-                          <span className="bg-slate-900 text-white text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center gap-1">
-                            <span className="w-1 h-1 rounded-full bg-rose-500" />
+                          <span className="bg-rose-600 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded flex items-center gap-1 animate-pulse">
+                            <span className="w-1 h-1 rounded-full bg-white" />
                             Hari Ini
                           </span>
                         )}
@@ -346,7 +342,7 @@ export default function JadwalExplorer({
                       </div>
                     </div>
 
-                    <h3 className="text-base font-extrabold text-slate-900 group-hover:text-slate-950 transition-colors leading-snug mb-2">
+                    <h3 className="text-base font-extrabold text-slate-900 group-hover:text-rose-600 transition-colors duration-200 leading-snug mb-2">
                       {item.instansi}
                     </h3>
 
