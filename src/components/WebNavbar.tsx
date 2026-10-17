@@ -103,13 +103,11 @@ export default function WebNavbar({
             {/* Launch TV Display Button */}
             <button
               onClick={onOpenTvMode}
-              className="px-3 sm:px-4 py-2 sm:py-2.5 bg-slate-950 hover:bg-black text-white font-bold rounded-xl text-xs shadow-xs hover:shadow-md flex items-center gap-1.5 sm:gap-2 transition-all border border-slate-800 shrink-0"
+              title="Display TV Lobi"
+              aria-label="Display TV Lobi"
+              className="p-2 sm:p-2.5 bg-slate-950 hover:bg-black text-white rounded-xl transition-all shadow-xs hover:shadow-md border border-slate-800 shrink-0 flex items-center justify-center"
             >
-              <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
-              <Tv className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-slate-300" />
-              <span>
-                <span className="hidden sm:inline">Display </span>TV Lobi
-              </span>
+              <Tv className="w-4 h-4 text-slate-200" />
             </button>
 
             {/* Mobile Hamburger Button */}
