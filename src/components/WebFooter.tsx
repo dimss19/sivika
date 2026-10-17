@@ -32,16 +32,6 @@ export default function WebFooter() {
               digital kebanggaan Kota Surakarta. Melayani kunjungan industri, studi
               tiru, dan program kemitraan nasional.
             </p>
-
-            <div className="pt-2">
-              <span className="text-[11px] font-extrabold text-slate-900 uppercase tracking-widest flex items-center gap-1.5 mb-0.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-rose-600" />
-                SIVIKA v2.0
-              </span>
-              <p className="text-xs text-slate-500 font-medium">
-                Sistem Informasi Digital Signage & Portal Kunjungan
-              </p>
-            </div>
           </div>
 
           {/* Col 2: Quick Links */}
