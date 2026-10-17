@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Image from "next/image";
 import {
   Tv,
-  Calendar,
   RefreshCw,
   Menu,
   X,
@@ -30,9 +29,9 @@ export default function WebNavbar({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-18">
           {/* Brand Logo & Title */}
-          <div className="flex items-center gap-3.5">
-            <a href="#" className="flex items-center gap-3 group">
-              <div className="relative w-14 h-12 flex items-center justify-center p-1 bg-white rounded-xl border border-slate-200 shadow-xs group-hover:border-slate-400 transition-all">
+          <div className="flex items-center gap-3">
+            <a href="#" className="flex items-center gap-2.5 sm:gap-3 group">
+              <div className="relative w-12 sm:w-14 h-11 sm:h-12 flex items-center justify-center p-1 bg-white rounded-xl border border-slate-200 shadow-xs group-hover:border-slate-400 transition-all shrink-0">
                 <Image
                   src="/logo.png"
                   alt="Solo Techno Park"
@@ -42,17 +41,17 @@ export default function WebNavbar({
                   priority
                 />
               </div>
-              <div>
+              <div className="min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="font-extrabold text-lg sm:text-xl tracking-tight text-slate-950">
+                  <span className="font-extrabold text-base sm:text-xl tracking-tight text-slate-950 truncate">
                     SOLO<span className="text-slate-900">TECHNO</span><span className="text-rose-600">PARK</span>
                   </span>
-                  <span className="hidden sm:inline-flex items-center gap-1 bg-slate-900 text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
+                  <span className="hidden md:inline-flex items-center gap-1 bg-slate-900 text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
                     <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
                     SIVIKA
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-500 font-medium tracking-wide">
+                <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium tracking-wide truncate hidden sm:block">
                   Sistem Informasi Kunjungan & Portal Agenda
                 </p>
               </div>
@@ -75,10 +74,9 @@ export default function WebNavbar({
             </a>
             <a
               href="#jadwal"
-              className="px-3.5 py-2 rounded-xl hover:text-slate-950 hover:bg-slate-100 transition-all flex items-center gap-1.5"
+              className="px-3.5 py-2 rounded-xl hover:text-slate-950 hover:bg-slate-100 transition-all"
             >
-              <Calendar className="w-4 h-4 text-slate-500" />
-              <span>Jadwal Kunjungan</span>
+              Jadwal Kunjungan
             </a>
             <a
               href="#video"
@@ -95,13 +93,13 @@ export default function WebNavbar({
           </nav>
 
           {/* Action Buttons */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             {/* Refresh Button */}
             <button
               onClick={onRefresh}
               disabled={isRefreshing}
               title="Perbarui Data Jadwal"
-              className="p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl transition-all disabled:opacity-50 border border-slate-200/80"
+              className="p-2 sm:p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl transition-all disabled:opacity-50 border border-slate-200/80 shrink-0"
             >
               <RefreshCw
                 className={`w-3.5 h-3.5 ${isRefreshing ? "animate-spin text-slate-900" : ""}`}
@@ -111,17 +109,19 @@ export default function WebNavbar({
             {/* Launch TV Display Button */}
             <button
               onClick={onOpenTvMode}
-              className="px-4 py-2.5 bg-slate-950 hover:bg-black text-white font-bold rounded-xl text-xs shadow-xs hover:shadow-md flex items-center gap-2 transition-all border border-slate-800"
+              className="px-3 sm:px-4 py-2 sm:py-2.5 bg-slate-950 hover:bg-black text-white font-bold rounded-xl text-xs shadow-xs hover:shadow-md flex items-center gap-1.5 sm:gap-2 transition-all border border-slate-800 shrink-0"
             >
               <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
-              <Tv className="w-4 h-4 text-slate-300" />
-              <span>Display TV Lobi</span>
+              <Tv className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-slate-300" />
+              <span>
+                <span className="hidden sm:inline">Display </span>TV Lobi
+              </span>
             </button>
 
             {/* Mobile Hamburger Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all"
+              className="lg:hidden p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all shrink-0"
               aria-label="Menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -132,34 +132,41 @@ export default function WebNavbar({
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-slate-200 px-4 py-4 space-y-2 text-xs font-bold text-slate-700 animate-in slide-in-from-top-2 duration-150">
+        <div className="lg:hidden bg-white border-b border-slate-200 px-4 py-4 space-y-1.5 text-xs font-bold text-slate-700 animate-in slide-in-from-top-2 duration-150">
           <a
             href="#profil"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-xl hover:bg-slate-50"
+            className="block px-3.5 py-2.5 rounded-xl hover:bg-slate-50"
           >
             Profil STP
           </a>
           <a
             href="#fasilitas"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-xl hover:bg-slate-50"
+            className="block px-3.5 py-2.5 rounded-xl hover:bg-slate-50"
           >
             Fasilitas & Kawasan
           </a>
           <a
             href="#jadwal"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-xl hover:bg-slate-50 text-rose-600"
+            className="block px-3.5 py-2.5 rounded-xl hover:bg-slate-50 text-rose-600"
           >
             Jadwal Kunjungan ({totalSchedule} Agenda)
           </a>
           <a
             href="#video"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-xl hover:bg-slate-50"
+            className="block px-3.5 py-2.5 rounded-xl hover:bg-slate-50"
           >
             Video Profil STP
+          </a>
+          <a
+            href="#kontak"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block px-3.5 py-2.5 rounded-xl hover:bg-slate-50"
+          >
+            Kontak & Lokasi
           </a>
         </div>
       )}

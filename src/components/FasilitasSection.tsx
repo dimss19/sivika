@@ -95,7 +95,7 @@ export default function FasilitasSection() {
         </div>
 
         {/* Facility Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           {facilities.map((f) => {
             const Icon = f.icon;
             return (

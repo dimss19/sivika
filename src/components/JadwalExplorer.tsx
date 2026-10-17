@@ -288,7 +288,7 @@ export default function JadwalExplorer({
             /* Table Layout */
             <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden">
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs text-slate-700">
+                <table className="w-full text-left text-xs text-slate-700 min-w-[760px]">
                   <thead className="bg-slate-50/80 border-b border-slate-200 text-slate-500 uppercase text-[11px] font-extrabold tracking-wider">
                     <tr>
                       <th
@@ -391,7 +391,7 @@ export default function JadwalExplorer({
             </div>
           ) : (
             /* Cards Layout */
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {paginatedItems.map((item) => (
                 <div
                   key={item.id}

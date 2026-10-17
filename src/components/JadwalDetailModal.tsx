@@ -32,29 +32,29 @@ export default function JadwalDetailModal({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-white rounded-3xl w-full max-w-2xl shadow-2xl border border-slate-100 overflow-hidden relative animate-in zoom-in-95 duration-200"
+        className="bg-white rounded-3xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl border border-slate-100 overflow-hidden relative animate-in zoom-in-95 duration-200"
       >
         {/* Top Header (Sleek Obsidian Black) */}
-        <div className="bg-slate-950 px-6 py-5 text-white flex items-center justify-between border-b border-slate-800">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-white/10 rounded-2xl backdrop-blur-md text-white">
-              <Building className="w-6 h-6" />
+        <div className="bg-slate-950 px-4 sm:px-6 py-4 sm:py-5 text-white flex items-center justify-between border-b border-slate-800 shrink-0">
+          <div className="flex items-center gap-3 min-w-0 pr-2">
+            <div className="p-2 sm:p-2.5 bg-white/10 rounded-2xl backdrop-blur-md text-white shrink-0">
+              <Building className="w-5 sm:w-6 h-5 sm:h-6" />
             </div>
-            <div>
+            <div className="min-w-0">
               <div className="flex items-center gap-1.5 mb-0.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
-                <span className="text-[11px] font-extrabold uppercase tracking-widest text-slate-400">
-                  Solo Techno Park • Detail Agenda Kunjungan
+                <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse shrink-0" />
+                <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-widest text-slate-400 truncate">
+                  Solo Techno Park • Detail Agenda
                 </span>
               </div>
-              <h3 className="text-lg font-black leading-tight text-white">
+              <h3 className="text-base sm:text-lg font-black leading-tight text-white line-clamp-1">
                 {jadwal.kegiatan}
               </h3>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-white hover:bg-white/10 rounded-full transition-all"
+            className="p-2 text-slate-400 hover:text-white hover:bg-white/10 rounded-full transition-all shrink-0"
             aria-label="Tutup"
           >
             <X className="w-5 h-5" />
@@ -62,7 +62,7 @@ export default function JadwalDetailModal({
         </div>
 
         {/* Content Body */}
-        <div className="p-6 space-y-6 max-h-[80vh] overflow-y-auto">
+        <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto flex-1">
           {/* Main Institution Card */}
           <div className="bg-slate-50 p-5 rounded-2xl border border-slate-200/80">
             <div className="flex items-center justify-between mb-2">

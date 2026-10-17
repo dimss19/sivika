@@ -554,137 +554,139 @@ export default function TVDisplayView({
             </div>
           ) : (
             /* Full Railway Station Departure Board Layout (Clean, Tabular, High-Contrast PIDS) */
-            <div className="flex-1 flex flex-col min-h-0">
-              {/* Station Board Column Headers Bar */}
-              <div className="bg-slate-950 text-white rounded-2xl px-5 py-2.5 text-xs font-mono uppercase tracking-wider flex items-center font-bold border border-slate-800 shadow-xs mb-2 shrink-0">
-                <div className="w-48 lg:w-56 shrink-0 flex items-center gap-1.5 pl-2">
-                  <Clock className="w-3.5 h-3.5 text-rose-500" />
-                  <span>WAKTU & TANGGAL</span>
+            <div className="flex-1 flex flex-col min-h-0 overflow-x-auto">
+              <div className="min-w-[840px] flex-1 flex flex-col min-h-0">
+                {/* Station Board Column Headers Bar */}
+                <div className="bg-slate-950 text-white rounded-2xl px-5 py-2.5 text-xs font-mono uppercase tracking-wider flex items-center font-bold border border-slate-800 shadow-xs mb-2 shrink-0">
+                  <div className="w-48 lg:w-56 shrink-0 flex items-center gap-1.5 pl-2">
+                    <Clock className="w-3.5 h-3.5 text-rose-500" />
+                    <span>WAKTU & TANGGAL</span>
+                  </div>
+                  <div className="w-64 lg:w-80 xl:w-96 shrink-0 pr-4">
+                    <span>INSTANSI / TAMU</span>
+                  </div>
+                  <div className="flex-1 min-w-0 pr-4 hidden md:block">
+                    <span>AGENDA KEGIATAN</span>
+                  </div>
+                  <div className="w-44 lg:w-52 shrink-0 flex items-center gap-1.5 pr-3">
+                    <MapPin className="w-3.5 h-3.5 text-rose-500" />
+                    <span>LOKASI RUANGAN</span>
+                  </div>
+                  <div className="w-24 lg:w-28 shrink-0 text-center">
+                    <span>PESERTA</span>
+                  </div>
+                  <div className="w-28 lg:w-32 shrink-0 text-center">
+                    <span>STATUS</span>
+                  </div>
                 </div>
-                <div className="w-64 lg:w-80 xl:w-96 shrink-0 pr-4">
-                  <span>INSTANSI / TAMU</span>
-                </div>
-                <div className="flex-1 min-w-0 pr-4 hidden md:block">
-                  <span>AGENDA KEGIATAN</span>
-                </div>
-                <div className="w-44 lg:w-52 shrink-0 flex items-center gap-1.5 pr-3">
-                  <MapPin className="w-3.5 h-3.5 text-rose-500" />
-                  <span>LOKASI RUANGAN</span>
-                </div>
-                <div className="w-24 lg:w-28 shrink-0 text-center">
-                  <span>PESERTA</span>
-                </div>
-                <div className="w-28 lg:w-32 shrink-0 text-center">
-                  <span>STATUS</span>
-                </div>
-              </div>
 
-              {/* Station Board Departure Rows (7 Rows per Slide) */}
-              <div className="flex-1 flex flex-col justify-between gap-1.5 min-h-0 overflow-hidden">
-                {displayedItems.map((item, index) => {
-                  const cat = getCategoryBadge(item.kategori);
-                  const formattedKegiatan = formatKegiatan(item.kegiatan);
-                  return (
-                    <div
-                      key={`${activePage}-${item.id}`}
-                      onClick={() => onSelectItem(item)}
-                      className={`animate-card-enter stagger-${(index % 7) + 1} bg-white hover:bg-slate-100/90 border border-slate-200/90 hover:border-slate-400 rounded-2xl px-4 sm:px-5 py-2.5 flex items-center shadow-2xs hover:shadow-md transition-all duration-200 cursor-pointer group relative overflow-hidden shrink-0 flex-1 min-h-[48px]`}
-                    >
-                      {/* Left Status Accent Indicator Bar */}
+                {/* Station Board Departure Rows (7 Rows per Slide) */}
+                <div className="flex-1 flex flex-col justify-between gap-1.5 min-h-0 overflow-hidden">
+                  {displayedItems.map((item, index) => {
+                    const cat = getCategoryBadge(item.kategori);
+                    const formattedKegiatan = formatKegiatan(item.kegiatan);
+                    return (
                       <div
-                        className={`absolute left-0 top-0 bottom-0 w-1.5 ${
-                          item.isToday
-                            ? "bg-rose-600"
-                            : "bg-slate-900 group-hover:bg-rose-600"
-                        } transition-colors duration-200`}
-                      />
+                        key={`${activePage}-${item.id}`}
+                        onClick={() => onSelectItem(item)}
+                        className={`animate-card-enter stagger-${(index % 7) + 1} bg-white hover:bg-slate-100/90 border border-slate-200/90 hover:border-slate-400 rounded-2xl px-4 sm:px-5 py-2.5 flex items-center shadow-2xs hover:shadow-md transition-all duration-200 cursor-pointer group relative overflow-hidden shrink-0 flex-1 min-h-[48px]`}
+                      >
+                        {/* Left Status Accent Indicator Bar */}
+                        <div
+                          className={`absolute left-0 top-0 bottom-0 w-1.5 ${
+                            item.isToday
+                              ? "bg-rose-600"
+                              : "bg-slate-900 group-hover:bg-rose-600"
+                          } transition-colors duration-200`}
+                        />
 
-                      {/* 1. WAKTU & TANGGAL */}
-                      <div className="w-48 lg:w-56 shrink-0 flex items-center gap-2.5 pl-2">
-                        <div className="bg-slate-950 text-white font-mono text-xs sm:text-sm font-bold px-2.5 py-1 rounded-xl flex items-center gap-1 shadow-xs shrink-0 group-hover:bg-slate-900 transition-colors">
-                          <Clock className="w-3.5 h-3.5 text-rose-400 shrink-0" />
-                          <span>{item.timeFormatted}</span>
+                        {/* 1. WAKTU & TANGGAL */}
+                        <div className="w-48 lg:w-56 shrink-0 flex items-center gap-2.5 pl-2">
+                          <div className="bg-slate-950 text-white font-mono text-xs sm:text-sm font-bold px-2.5 py-1 rounded-xl flex items-center gap-1 shadow-xs shrink-0 group-hover:bg-slate-900 transition-colors">
+                            <Clock className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+                            <span>{item.timeFormatted}</span>
+                          </div>
+                          <div className="text-[11px] sm:text-xs font-semibold text-slate-500 truncate">
+                            {item.dateFormatted || item.rawDateTime}
+                          </div>
                         </div>
-                        <div className="text-[11px] sm:text-xs font-semibold text-slate-500 truncate">
-                          {item.dateFormatted || item.rawDateTime}
+
+                        {/* 2. INSTANSI / ROMBONGAN TAMU */}
+                        <div className="w-64 lg:w-80 xl:w-96 shrink-0 pr-4">
+                          <h3 className="text-sm sm:text-base lg:text-lg font-black text-slate-950 group-hover:text-rose-600 transition-colors tracking-tight truncate">
+                            {item.instansi}
+                          </h3>
+                          {item.pic && item.pic !== "-" && (
+                            <p className="text-[10px] text-slate-400 truncate">
+                              PIC: {item.pic}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* 3. AGENDA KEGIATAN */}
+                        <div className="flex-1 min-w-0 pr-4 hidden md:flex items-center gap-2">
+                          <span
+                            className={`text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-md border uppercase tracking-wider shrink-0 ${cat.badge}`}
+                          >
+                            {cat.label}
+                          </span>
+                          <span className="text-xs sm:text-sm font-semibold text-slate-700 truncate">
+                            {formattedKegiatan}
+                          </span>
+                        </div>
+
+                        {/* 4. RUANGAN / LOKASI */}
+                        <div className="w-44 lg:w-52 shrink-0 flex items-center gap-2 pr-3">
+                          <div className="w-6 h-6 lg:w-7 lg:h-7 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 border border-rose-100 group-hover:scale-110 group-hover:bg-rose-100 transition-all duration-200">
+                            <MapPin className="w-3.5 h-3.5" />
+                          </div>
+                          <span className="text-xs sm:text-sm font-bold text-slate-900 truncate">
+                            {item.tempat}
+                          </span>
+                        </div>
+
+                        {/* 5. PESERTA */}
+                        <div className="w-24 lg:w-28 shrink-0 text-center">
+                          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-lg">
+                            <Users className="w-3 h-3 text-slate-400" />
+                            <span>
+                              {item.jumlahPeserta && item.jumlahPeserta !== "-"
+                                ? `${item.jumlahPeserta} Pax`
+                                : "Rombongan"}
+                            </span>
+                          </span>
+                        </div>
+
+                        {/* 6. STATUS */}
+                        <div className="w-28 lg:w-32 shrink-0 text-center">
+                          {item.isToday ? (
+                            <span className="inline-flex items-center gap-1.5 text-[10px] sm:text-xs font-black uppercase tracking-wider bg-rose-600 text-white px-3 py-1 rounded-full shadow-xs animate-pulse">
+                              <span className="w-1.5 h-1.5 rounded-full bg-white" />
+                              HARI INI
+                            </span>
+                          ) : item.status.toLowerCase() === "reschedule" ? (
+                            <span className="inline-flex items-center text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-300 px-3 py-1 rounded-full">
+                              RESCHEDULE
+                            </span>
+                          ) : item.status.toLowerCase() === "cancel" ? (
+                            <span className="inline-flex items-center text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-slate-200 text-slate-600 px-3 py-1 rounded-full">
+                              BATAL
+                            </span>
+                          ) : item.isUpcoming ? (
+                            <span className="inline-flex items-center gap-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-slate-950 text-white px-3 py-1 rounded-full shadow-2xs">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                              TERJADWAL
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center text-[10px] sm:text-xs font-semibold uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200 px-3 py-1 rounded-full">
+                              SELESAI
+                            </span>
+                          )}
                         </div>
                       </div>
-
-                      {/* 2. INSTANSI / ROMBONGAN TAMU */}
-                      <div className="w-64 lg:w-80 xl:w-96 shrink-0 pr-4">
-                        <h3 className="text-sm sm:text-base lg:text-lg font-black text-slate-950 group-hover:text-rose-600 transition-colors tracking-tight truncate">
-                          {item.instansi}
-                        </h3>
-                        {item.pic && item.pic !== "-" && (
-                          <p className="text-[10px] text-slate-400 truncate">
-                            PIC: {item.pic}
-                          </p>
-                        )}
-                      </div>
-
-                      {/* 3. AGENDA KEGIATAN */}
-                      <div className="flex-1 min-w-0 pr-4 hidden md:flex items-center gap-2">
-                        <span
-                          className={`text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-md border uppercase tracking-wider shrink-0 ${cat.badge}`}
-                        >
-                          {cat.label}
-                        </span>
-                        <span className="text-xs sm:text-sm font-semibold text-slate-700 truncate">
-                          {formattedKegiatan}
-                        </span>
-                      </div>
-
-                      {/* 4. RUANGAN / LOKASI */}
-                      <div className="w-44 lg:w-52 shrink-0 flex items-center gap-2 pr-3">
-                        <div className="w-6 h-6 lg:w-7 lg:h-7 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 border border-rose-100 group-hover:scale-110 group-hover:bg-rose-100 transition-all duration-200">
-                          <MapPin className="w-3.5 h-3.5" />
-                        </div>
-                        <span className="text-xs sm:text-sm font-bold text-slate-900 truncate">
-                          {item.tempat}
-                        </span>
-                      </div>
-
-                      {/* 5. PESERTA */}
-                      <div className="w-24 lg:w-28 shrink-0 text-center">
-                        <span className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-lg">
-                          <Users className="w-3 h-3 text-slate-400" />
-                          <span>
-                            {item.jumlahPeserta && item.jumlahPeserta !== "-"
-                              ? `${item.jumlahPeserta} Pax`
-                              : "Rombongan"}
-                          </span>
-                        </span>
-                      </div>
-
-                      {/* 6. STATUS */}
-                      <div className="w-28 lg:w-32 shrink-0 text-center">
-                        {item.isToday ? (
-                          <span className="inline-flex items-center gap-1.5 text-[10px] sm:text-xs font-black uppercase tracking-wider bg-rose-600 text-white px-3 py-1 rounded-full shadow-xs animate-pulse">
-                            <span className="w-1.5 h-1.5 rounded-full bg-white" />
-                            HARI INI
-                          </span>
-                        ) : item.status.toLowerCase() === "reschedule" ? (
-                          <span className="inline-flex items-center text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-300 px-3 py-1 rounded-full">
-                            RESCHEDULE
-                          </span>
-                        ) : item.status.toLowerCase() === "cancel" ? (
-                          <span className="inline-flex items-center text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-slate-200 text-slate-600 px-3 py-1 rounded-full">
-                            BATAL
-                          </span>
-                        ) : item.isUpcoming ? (
-                          <span className="inline-flex items-center gap-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-slate-950 text-white px-3 py-1 rounded-full shadow-2xs">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                            TERJADWAL
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center text-[10px] sm:text-xs font-semibold uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200 px-3 py-1 rounded-full">
-                            SELESAI
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
             </div>
           )}
