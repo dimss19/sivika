@@ -16,6 +16,8 @@ import {
   ArrowLeft,
   RefreshCw,
   CloudSun,
+  LayoutList,
+  LayoutGrid,
 } from "lucide-react";
 import { JadwalKunjungan } from "@/lib/sheets";
 import STPVideoPlayer from "./STPVideoPlayer";
@@ -30,6 +32,7 @@ interface TVDisplayViewProps {
 }
 
 export type TVModeType = "carousel" | "today" | "split";
+export type TVLayoutType = "rows" | "grid";
 
 function formatKegiatan(kegiatan: string): string {
   if (!kegiatan || kegiatan.trim() === "-" || kegiatan.trim() === "") {
@@ -88,6 +91,7 @@ export default function TVDisplayView({
   lastUpdated,
 }: TVDisplayViewProps) {
   const [tvMode, setTvMode] = useState<TVModeType>("carousel");
+  const [cardLayout, setCardLayout] = useState<TVLayoutType>("rows");
   const slideInterval = 10;
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [time, setTime] = useState<string>("");
@@ -96,6 +100,10 @@ export default function TVDisplayView({
     temp: 29,
     desc: "Cerah Berawan",
   });
+
+  // Touch gesture state for swipeable layout
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [touchStartY, setTouchStartY] = useState<number | null>(null);
 
   // Digital clock update
   useEffect(() => {
@@ -180,20 +188,25 @@ export default function TVDisplayView({
 
   const activeItems = useMemo(() => {
     if (tvMode === "today") {
-      return todayItems.length > 0 ? todayItems : relevantItems.slice(0, 5);
+      return todayItems.length > 0 ? todayItems : relevantItems.slice(0, 6);
     }
     if (tvMode === "split") {
       return relevantItems.slice(0, 16);
     }
-    // "carousel" mode: rotate through 25 most relevant items
-    return relevantItems.slice(0, 25);
+    // "carousel" mode: rotate through 25 to 30 most relevant items
+    return relevantItems.slice(0, 30);
   }, [tvMode, todayItems, relevantItems]);
 
-  const itemsPerPage = tvMode === "split" ? 4 : 5;
+  const itemsPerPage = tvMode === "split" ? 4 : cardLayout === "grid" ? 6 : 5;
   const totalPages = Math.max(1, Math.ceil(activeItems.length / itemsPerPage));
 
   const handleModeChange = (newMode: TVModeType) => {
     setTvMode(newMode);
+    setCurrentPage(0);
+  };
+
+  const handleLayoutChange = (layout: TVLayoutType) => {
+    setCardLayout(layout);
     setCurrentPage(0);
   };
 
@@ -226,8 +239,36 @@ export default function TVDisplayView({
     }
   };
 
+  // Touch swipe gesture handlers (Swipe left for next page, swipe right for prev page)
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.targetTouches[0].clientX);
+    setTouchStartY(e.targetTouches[0].clientY);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX === null || touchStartY === null) return;
+    const diffX = touchStartX - e.changedTouches[0].clientX;
+    const diffY = touchStartY - e.changedTouches[0].clientY;
+
+    if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX > 0) {
+        // Swipe left -> Next page
+        setCurrentPage((p) => (p + 1) % totalPages);
+      } else {
+        // Swipe right -> Prev page
+        setCurrentPage((p) => (p > 0 ? p - 1 : totalPages - 1));
+      }
+    }
+    setTouchStartX(null);
+    setTouchStartY(null);
+  };
+
   return (
-    <div className="fixed inset-0 z-50 bg-[#F8FAFC] text-slate-900 flex flex-col justify-between overflow-y-auto overflow-x-hidden select-none">
+    <div
+      className="fixed inset-0 z-50 bg-[#F8FAFC] text-slate-900 flex flex-col justify-between overflow-y-auto overflow-x-hidden select-none"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
       {/* 1. TOP HEADER BAR */}
       <header className="bg-white border-b border-slate-200/80 px-4 sm:px-6 py-2.5 sm:py-3 shadow-xs flex items-center justify-between shrink-0 relative z-30 gap-2">
         {/* Left: Logo & Branding */}
@@ -404,7 +445,7 @@ export default function TVDisplayView({
 
       {/* 2. MAIN TV BODY */}
       <main className="flex-1 px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex flex-col justify-between min-h-0">
-        {/* Title & Subtitle + Pagination Controls */}
+        {/* Title & Subtitle + Controls (Layout Switcher & Pagination) */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2 sm:mb-3 shrink-0">
           <div>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-950 tracking-tight leading-tight">
@@ -420,38 +461,71 @@ export default function TVDisplayView({
             </div>
           </div>
 
-          {/* Pagination Controls */}
-          {totalPages > 1 && (
-            <div className="flex items-center gap-1.5 self-end sm:self-auto shrink-0">
-              <button
-                onClick={() => {
-                  setCurrentPage((p) => (p > 0 ? p - 1 : totalPages - 1));
-                }}
-                className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl border border-slate-200 bg-white flex items-center justify-center text-slate-600 hover:bg-slate-50 shadow-2xs transition-all"
-                title="Halaman Sebelumnya"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
+          {/* Interactive Controls: Layout Switcher & Pagination */}
+          <div className="flex items-center gap-2 self-end sm:self-auto shrink-0">
+            {/* Layout Switcher (Baris vs Kotak) */}
+            {tvMode !== "split" && (
+              <div className="flex items-center bg-white border border-slate-200 rounded-xl p-0.5 shadow-2xs">
+                <button
+                  onClick={() => handleLayoutChange("rows")}
+                  title="Tampilan Baris (Tabel)"
+                  className={`px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 text-xs font-bold ${
+                    cardLayout === "rows"
+                      ? "bg-slate-950 text-white shadow-xs"
+                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                  }`}
+                >
+                  <LayoutList className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Baris</span>
+                </button>
+                <button
+                  onClick={() => handleLayoutChange("grid")}
+                  title="Tampilan Kotak (Grid)"
+                  className={`px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 text-xs font-bold ${
+                    cardLayout === "grid"
+                      ? "bg-slate-950 text-white shadow-xs"
+                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                  }`}
+                >
+                  <LayoutGrid className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Kotak</span>
+                </button>
+              </div>
+            )}
 
-              <span className="px-3 py-1 sm:px-3.5 sm:py-1.5 text-xs sm:text-sm font-bold text-slate-700 bg-white border border-slate-200 rounded-xl shadow-2xs">
-                {String(activePage + 1).padStart(2, "0")} /{" "}
-                {String(totalPages).padStart(2, "0")}
-              </span>
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => {
+                    setCurrentPage((p) => (p > 0 ? p - 1 : totalPages - 1));
+                  }}
+                  className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl border border-slate-200 bg-white flex items-center justify-center text-slate-600 hover:bg-slate-50 shadow-2xs transition-all"
+                  title="Halaman Sebelumnya (atau Geser / Swipe)"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
 
-              <button
-                onClick={() => {
-                  setCurrentPage((p) => (p + 1) % totalPages);
-                }}
-                className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl border border-slate-200 bg-white flex items-center justify-center text-slate-600 hover:bg-slate-50 shadow-2xs transition-all"
-                title="Halaman Berikutnya"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-          )}
+                <span className="px-3 py-1 sm:px-3.5 sm:py-1.5 text-xs sm:text-sm font-bold text-slate-700 bg-white border border-slate-200 rounded-xl shadow-2xs">
+                  {String(activePage + 1).padStart(2, "0")} /{" "}
+                  {String(totalPages).padStart(2, "0")}
+                </span>
+
+                <button
+                  onClick={() => {
+                    setCurrentPage((p) => (p + 1) % totalPages);
+                  }}
+                  className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl border border-slate-200 bg-white flex items-center justify-center text-slate-600 hover:bg-slate-50 shadow-2xs transition-all"
+                  title="Halaman Berikutnya (atau Geser / Swipe)"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* Display Container: Split Mode vs Clean Board Mode */}
+        {/* Display Container: Split Mode vs Clean Board Mode (Rows / Grid) */}
         <div className="flex-1 flex flex-col justify-between min-h-0">
           {tvMode === "split" ? (
             <div className="flex flex-col lg:grid lg:grid-cols-12 gap-4 h-full min-h-0 overflow-y-auto">
@@ -537,8 +611,77 @@ export default function TVDisplayView({
                 <STPVideoPlayer />
               </div>
             </div>
+          ) : cardLayout === "grid" ? (
+            /* Modern Grid Cards Layout (Tampilan Kotak Kiosk) */
+            <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-3.5 min-h-0 mb-2">
+              {displayedItems.map((item) => {
+                const cat = getCategoryBadge(item.kategori);
+                const formattedKegiatan = formatKegiatan(item.kegiatan);
+                return (
+                  <div
+                    key={item.id}
+                    onClick={() => onSelectItem(item)}
+                    className="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-lg hover:border-slate-300 transition-all p-4 sm:p-4.5 flex flex-col justify-between cursor-pointer group"
+                  >
+                    {/* Top Row: Time & Category */}
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="bg-blue-50 text-blue-600 font-bold text-xs px-2.5 py-1 rounded-lg flex items-center gap-1.5 shrink-0">
+                        <Clock className="w-3.5 h-3.5 text-blue-500" />
+                        <span>{item.timeFormatted}</span>
+                      </div>
+
+                      <span
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider shrink-0 ${cat.badge}`}
+                      >
+                        {cat.label}
+                      </span>
+                    </div>
+
+                    {/* Middle: Instansi & Kegiatan */}
+                    <div className="my-2 flex-1 flex flex-col justify-center">
+                      <h3 className="font-black text-slate-900 text-sm sm:text-base tracking-tight uppercase line-clamp-2 group-hover:text-blue-600 transition-colors">
+                        {item.instansi}
+                      </h3>
+                      {formattedKegiatan && (
+                        <p className="text-xs text-slate-500 font-medium mt-1 line-clamp-1">
+                          {formattedKegiatan}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Bottom Row: Location, Participants & Status */}
+                    <div className="pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600 gap-2">
+                      <div className="flex items-center gap-1.5 truncate max-w-[45%]">
+                        <div className="w-5 h-5 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center shrink-0">
+                          <MapPin className="w-3 h-3" />
+                        </div>
+                        <span className="font-semibold text-slate-700 truncate text-[11px] sm:text-xs">
+                          {item.tempat}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-2 shrink-0">
+                        <div className="flex items-center gap-1 text-slate-500 text-[11px] font-medium">
+                          <Users className="w-3.5 h-3.5 text-slate-400" />
+                          <span>
+                            {item.jumlahPeserta && item.jumlahPeserta !== "-"
+                              ? `${item.jumlahPeserta}`
+                              : "Rombongan"}
+                          </span>
+                        </div>
+
+                        <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                          <span>TERJADWAL</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           ) : (
-            /* Clean TV Table Board with Horizontal Scroll Wrapper for Perfect Responsiveness */
+            /* Clean TV Table Board with Horizontal Scroll Wrapper (Tampilan Baris) */
             <div className="flex-1 flex flex-col justify-between min-h-0 overflow-x-auto overflow-y-visible">
               <div className="min-w-[920px] flex-1 flex flex-col justify-between min-h-0">
                 {/* Table Header Bar */}
