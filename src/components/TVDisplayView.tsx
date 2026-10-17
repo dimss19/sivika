@@ -10,7 +10,6 @@ import {
   MapPin,
   Users,
   FileText,
-  CircleDot,
   ChevronLeft,
   ChevronRight,
   Maximize,
@@ -597,8 +596,9 @@ export default function TVDisplayView({
                       <MapPin className="w-3.5 h-3.5 text-slate-300" />
                       <span>LOKASI</span>
                     </div>
-                    <div className="w-24 shrink-0 text-center">
-                      <span>STATUS</span>
+                    <div className="w-36 shrink-0 text-center flex items-center justify-center gap-1.5">
+                      <CalendarDays className="w-3.5 h-3.5 text-slate-300" />
+                      <span>TANGGAL</span>
                     </div>
                   </div>
 
@@ -646,10 +646,10 @@ export default function TVDisplayView({
                             </span>
                           </div>
 
-                          <div className="w-24 shrink-0 text-center">
-                            <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700">
-                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                              <span>TERJADWAL</span>
+                          <div className="w-36 shrink-0 text-center">
+                            <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200/80 max-w-full">
+                              <CalendarDays className="w-3 h-3 text-slate-500 shrink-0" />
+                              <span className="truncate">{item.dateFormatted}</span>
                             </div>
                           </div>
                         </div>
@@ -722,9 +722,9 @@ export default function TVDisplayView({
                           </span>
                         </div>
 
-                        <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                          <span>TERJADWAL</span>
+                        <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200/80">
+                          <CalendarDays className="w-3 h-3 text-slate-500 shrink-0" />
+                          <span className="truncate">{item.dateFormatted}</span>
                         </div>
                       </div>
                     </div>
@@ -735,7 +735,7 @@ export default function TVDisplayView({
           ) : (
             /* Clean TV Table Board with Horizontal Scroll Wrapper (Tampilan Baris) */
             <div className="flex-1 flex flex-col justify-between min-h-0 overflow-x-auto overflow-y-visible">
-              <div className="min-w-[920px] flex-1 flex flex-col justify-between min-h-0">
+              <div className="min-w-[960px] flex-1 flex flex-col justify-between min-h-0">
                 {/* Table Header Bar */}
                 <div className="bg-[#0F172A] text-white rounded-xl py-2.5 sm:py-3 px-5 sm:px-6 flex items-center text-[11px] sm:text-xs font-bold tracking-wider uppercase mb-2 sm:mb-2.5 shadow-xs shrink-0">
                   <div className="w-40 sm:w-44 shrink-0 flex items-center gap-1.5">
@@ -758,9 +758,9 @@ export default function TVDisplayView({
                     <Users className="w-3.5 h-3.5 text-slate-300" />
                     <span>PESERTA</span>
                   </div>
-                  <div className="w-28 sm:w-32 shrink-0 flex items-center justify-center gap-1.5 text-center">
-                    <CircleDot className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>STATUS</span>
+                  <div className="w-40 sm:w-48 shrink-0 flex items-center justify-center gap-1.5 text-center">
+                    <CalendarDays className="w-3.5 h-3.5 text-slate-300" />
+                    <span>TANGGAL</span>
                   </div>
                 </div>
 
@@ -824,11 +824,11 @@ export default function TVDisplayView({
                           </span>
                         </div>
 
-                        {/* 6. Status */}
-                        <div className="w-28 sm:w-32 shrink-0 flex justify-center text-center">
-                          <div className="inline-flex items-center gap-1.5 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700">
-                            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-500" />
-                            <span>TERJADWAL</span>
+                        {/* 6. Tanggal */}
+                        <div className="w-40 sm:w-48 shrink-0 flex justify-center text-center">
+                          <div className="inline-flex items-center gap-1.5 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200/80">
+                            <CalendarDays className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                            <span className="truncate">{item.dateFormatted}</span>
                           </div>
                         </div>
                       </div>
