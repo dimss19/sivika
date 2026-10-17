@@ -343,9 +343,13 @@ export default function TVDisplayView({
             <button
               onClick={onRefresh}
               disabled={isRefreshing}
-              title={`Sinkronkan Google Sheets Sekarang (Terakhir: ${new Date(
+              title={
                 lastUpdated
-              ).toLocaleTimeString("id-ID")})`}
+                  ? `Sinkronkan Google Sheets Sekarang (Terakhir: ${new Date(
+                      lastUpdated
+                    ).toLocaleTimeString("id-ID")})`
+                  : "Sinkronkan Google Sheets Sekarang"
+              }
               className="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 rounded-xl transition-all disabled:opacity-50 shrink-0"
             >
               <RefreshCw

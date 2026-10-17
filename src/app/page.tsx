@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useCallback, useMemo, Suspense } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import WebNavbar from "@/components/WebNavbar";
 import ProfileHero from "@/components/ProfileHero";
 import FasilitasSection from "@/components/FasilitasSection";
@@ -12,20 +13,31 @@ import JadwalDetailModal from "@/components/JadwalDetailModal";
 import { JadwalKunjungan } from "@/lib/sheets";
 import { CheckCircle2 } from "lucide-react";
 
-export default function HomePage() {
+function HomeContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [data, setData] = useState<JadwalKunjungan[]>([]);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [lastUpdated, setLastUpdated] = useState<string>("");
   const [isLive, setIsLive] = useState<boolean>(true);
-  const [isTvMode, setIsTvMode] = useState<boolean>(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      return params.get("mode") === "tv";
-    }
-    return false;
-  });
   const [selectedJadwal, setSelectedJadwal] = useState<JadwalKunjungan | null>(null);
   const [showSyncNotification, setShowSyncNotification] = useState<boolean>(false);
+  const [tvModeOverride, setTvModeOverride] = useState<boolean | null>(null);
+
+  const isTvMode =
+    tvModeOverride !== null
+      ? tvModeOverride
+      : searchParams.get("mode") === "tv";
+
+  const handleOpenTvMode = useCallback(() => {
+    setTvModeOverride(true);
+    router.push("/?mode=tv", { scroll: false });
+  }, [router]);
+
+  const handleCloseTvMode = useCallback(() => {
+    setTvModeOverride(false);
+    router.push("/", { scroll: false });
+  }, [router]);
 
   // Fetch live spreadsheet data from API
   const fetchJadwal = useCallback(async (isManual = false) => {
@@ -77,18 +89,22 @@ export default function HomePage() {
         return;
       }
       if (e.key === "t" || e.key === "T") {
-        setIsTvMode((prev) => !prev);
+        if (isTvMode) {
+          handleCloseTvMode();
+        } else {
+          handleOpenTvMode();
+        }
       } else if (e.key === "r" || e.key === "R") {
         fetchJadwal(true);
       } else if (e.key === "Escape") {
         setSelectedJadwal(null);
-        setIsTvMode(false);
+        handleCloseTvMode();
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [fetchJadwal]);
+  }, [fetchJadwal, handleCloseTvMode, handleOpenTvMode, isTvMode]);
 
   const todayCount = useMemo(() => {
     return data.filter((item) => item.isToday).length;
@@ -114,7 +130,7 @@ export default function HomePage() {
         /* Dedicated Full-Screen Digital Signage TV View */
         <TVDisplayView
           data={data}
-          onCloseTvMode={() => setIsTvMode(false)}
+          onCloseTvMode={handleCloseTvMode}
           onSelectItem={(item) => setSelectedJadwal(item)}
           onRefresh={() => fetchJadwal(true)}
           isRefreshing={isRefreshing}
@@ -125,7 +141,7 @@ export default function HomePage() {
         /* Complete Solo Techno Park Institutional Profile Website */
         <>
           <WebNavbar
-            onOpenTvMode={() => setIsTvMode(true)}
+            onOpenTvMode={handleOpenTvMode}
             onRefresh={() => fetchJadwal(true)}
             isRefreshing={isRefreshing}
             totalSchedule={data.length}
@@ -134,7 +150,7 @@ export default function HomePage() {
 
           <main className="flex-1">
             <ProfileHero
-              onOpenTvMode={() => setIsTvMode(true)}
+              onOpenTvMode={handleOpenTvMode}
               totalSchedule={data.length}
               todayCount={todayCount}
             />
@@ -144,7 +160,7 @@ export default function HomePage() {
             <JadwalExplorer
               items={data}
               onSelectItem={(item) => setSelectedJadwal(item)}
-              onOpenTvMode={() => setIsTvMode(true)}
+              onOpenTvMode={handleOpenTvMode}
             />
 
             <VideoSection />
@@ -154,5 +170,19 @@ export default function HomePage() {
         </>
       )}
     </div>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-slate-50 flex items-center justify-center text-slate-400 font-bold text-sm">
+          Memuat SIVIKA Solo Techno Park...
+        </div>
+      }
+    >
+      <HomeContent />
+    </Suspense>
   );
 }
