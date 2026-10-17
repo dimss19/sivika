@@ -16,7 +16,6 @@ interface WebNavbarProps {
   onRefresh: () => void;
   isRefreshing: boolean;
   totalSchedule: number;
-  isLive: boolean;
 }
 
 export default function WebNavbar({
@@ -24,7 +23,6 @@ export default function WebNavbar({
   onRefresh,
   isRefreshing,
   totalSchedule,
-  isLive,
 }: WebNavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -97,30 +95,24 @@ export default function WebNavbar({
             </a>
           </nav>
 
-          {/* Live Sync Badge & TV Action Button */}
-          <div className="flex items-center gap-2.5">
-            {/* Live Sync Status */}
-            <div className="hidden sm:flex items-center gap-2 bg-slate-50 border border-slate-200/90 px-3 py-1.5 rounded-xl text-xs">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="font-bold text-slate-700">
-                {isLive ? "Live Sync" : "Cached"}
-              </span>
-              <button
-                onClick={onRefresh}
-                disabled={isRefreshing}
-                title="Sinkronkan Data Spreadsheet Sekarang"
-                className="text-slate-400 hover:text-slate-900 transition-all disabled:opacity-50"
-              >
-                <RefreshCw
-                  className={`w-3.5 h-3.5 ${isRefreshing ? "animate-spin text-slate-900" : ""}`}
-                />
-              </button>
-            </div>
+          {/* Action Buttons */}
+          <div className="flex items-center gap-2">
+            {/* Refresh Button */}
+            <button
+              onClick={onRefresh}
+              disabled={isRefreshing}
+              title="Perbarui Data Jadwal"
+              className="p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl transition-all disabled:opacity-50 border border-slate-200/80"
+            >
+              <RefreshCw
+                className={`w-3.5 h-3.5 ${isRefreshing ? "animate-spin text-slate-900" : ""}`}
+              />
+            </button>
 
             {/* Launch TV Display Button */}
             <button
               onClick={onOpenTvMode}
-              className="px-4 py-2.5 bg-slate-900 hover:bg-black text-white font-bold rounded-xl text-xs shadow-xs hover:shadow-md flex items-center gap-2 transition-all border border-slate-800"
+              className="px-4 py-2.5 bg-slate-950 hover:bg-black text-white font-bold rounded-xl text-xs shadow-xs hover:shadow-md flex items-center gap-2 transition-all border border-slate-800"
             >
               <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
               <Tv className="w-4 h-4 text-slate-300" />

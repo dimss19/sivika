@@ -13,7 +13,6 @@ import {
   FileSpreadsheet,
 } from "lucide-react";
 import { JadwalKunjungan, SPREADSHEET_URL } from "@/lib/sheets";
-import ZoomControl from "./ZoomControl";
 
 interface JadwalExplorerProps {
   items: JadwalKunjungan[];
@@ -29,7 +28,6 @@ export default function JadwalExplorer({
   const [activeTab, setActiveTab] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [viewMode, setViewMode] = useState<"table" | "cards">("table");
-  const [zoomLevel, setZoomLevel] = useState<number>(100);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 12;
 
@@ -177,35 +175,28 @@ export default function JadwalExplorer({
               </button>
             </div>
 
-            {/* View Mode & Zoom Controller */}
-            <div className="flex items-center gap-3">
-              <ZoomControl
-                zoomLevel={zoomLevel}
-                onZoomChange={(lvl) => setZoomLevel(lvl)}
-              />
-
-              <div className="flex items-center bg-slate-100 p-1 rounded-2xl text-xs font-bold">
-                <button
-                  onClick={() => setViewMode("table")}
-                  className={`px-3 py-1.5 rounded-xl transition-all ${
-                    viewMode === "table"
-                      ? "bg-white text-slate-900 shadow-xs"
-                      : "text-slate-600 hover:text-slate-900"
-                  }`}
-                >
-                  Tabel
-                </button>
-                <button
-                  onClick={() => setViewMode("cards")}
-                  className={`px-3 py-1.5 rounded-xl transition-all ${
-                    viewMode === "cards"
-                      ? "bg-white text-slate-900 shadow-xs"
-                      : "text-slate-600 hover:text-slate-900"
-                  }`}
-                >
-                  Kartu
-                </button>
-              </div>
+            {/* View Mode Toggle: Table or Cards */}
+            <div className="flex items-center bg-slate-100 p-1 rounded-2xl text-xs font-bold">
+              <button
+                onClick={() => setViewMode("table")}
+                className={`px-3.5 py-1.5 rounded-xl transition-all ${
+                  viewMode === "table"
+                    ? "bg-white text-slate-900 shadow-xs"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                Tabel
+              </button>
+              <button
+                onClick={() => setViewMode("cards")}
+                className={`px-3.5 py-1.5 rounded-xl transition-all ${
+                  viewMode === "cards"
+                    ? "bg-white text-slate-900 shadow-xs"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                Kartu
+              </button>
             </div>
           </div>
 
@@ -225,11 +216,8 @@ export default function JadwalExplorer({
           </div>
         </div>
 
-        {/* Content Container Scaled by Zoom Level */}
-        <div
-          style={{ zoom: `${zoomLevel}%` }}
-          className="transition-all duration-150 origin-top"
-        >
+        {/* Content Container (Table / Cards) */}
+        <div className="transition-all duration-150">
           {filteredItems.length === 0 ? (
             <div className="bg-white rounded-3xl p-12 text-center border-2 border-dashed border-slate-200">
               <Calendar className="w-10 h-10 text-slate-400 mx-auto mb-3" />

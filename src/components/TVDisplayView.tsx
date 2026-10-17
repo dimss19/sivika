@@ -5,11 +5,9 @@ import Image from "next/image";
 import {
   Clock,
   Calendar,
-  CloudSun,
   Tv,
   CalendarDays,
   Film,
-  Sparkles,
   Maximize,
   ArrowLeft,
   ChevronLeft,
@@ -17,9 +15,6 @@ import {
   MapPin,
   Users,
   RefreshCw,
-  ZoomIn,
-  ZoomOut,
-  RotateCcw,
   AlertCircle,
 } from "lucide-react";
 import { JadwalKunjungan } from "@/lib/sheets";
@@ -31,11 +26,10 @@ interface TVDisplayViewProps {
   onSelectItem: (item: JadwalKunjungan) => void;
   onRefresh: () => void;
   isRefreshing: boolean;
-  isLive: boolean;
   lastUpdated: string;
 }
 
-export type TVModeType = "today" | "carousel" | "split" | "all";
+export type TVModeType = "today" | "carousel" | "split";
 
 function formatKegiatan(kegiatan: string, kategori?: string): string {
   if (!kegiatan || kegiatan.trim() === "-" || kegiatan.trim() === "") {
@@ -80,11 +74,9 @@ export default function TVDisplayView({
   onSelectItem,
   onRefresh,
   isRefreshing,
-  isLive,
   lastUpdated,
 }: TVDisplayViewProps) {
   const [tvMode, setTvMode] = useState<TVModeType>("carousel");
-  const [tvZoom, setTvZoom] = useState<number>(100);
   const slideInterval = 10;
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [progress, setProgress] = useState<number>(0);
@@ -135,15 +127,12 @@ export default function TVDisplayView({
     if (tvMode === "today") {
       return todayItems.length > 0 ? todayItems : relevantItems.slice(0, 6);
     }
-    if (tvMode === "carousel") {
-      // In lobby carousel, rotate through the 36 most relevant items (6 slides of 6 cards = a 60-second cycle)
-      return relevantItems.slice(0, 36);
-    }
     if (tvMode === "split") {
       return relevantItems.slice(0, 16);
     }
-    return data;
-  }, [data, tvMode, todayItems, relevantItems]);
+    // "carousel" mode: rotate through the 36 most relevant items (6 slides of 6 cards = a 60-second cycle)
+    return relevantItems.slice(0, 36);
+  }, [tvMode, todayItems, relevantItems]);
 
   const itemsPerPage = tvMode === "split" ? 4 : 6;
   const totalPages = Math.max(1, Math.ceil(activeItems.length / itemsPerPage));
@@ -200,7 +189,7 @@ export default function TVDisplayView({
   return (
     <div className="fixed inset-0 z-50 bg-slate-50 text-slate-900 flex flex-col justify-between overflow-hidden select-none">
       {/* 1. SINGLE UNIFIED BROADCAST HEADER */}
-      <header className="bg-white border-b border-slate-200/90 px-4 sm:px-6 py-2 shadow-xs flex items-center justify-between shrink-0 relative z-30 gap-3">
+      <header className="bg-white border-b border-slate-200/90 px-4 sm:px-6 py-2.5 shadow-xs flex items-center justify-between shrink-0 relative z-30 gap-3">
         {/* Left: Branding & Status */}
         <div className="flex items-center gap-3 shrink-0">
           <div className="relative w-11 h-10 flex items-center justify-center p-1 bg-white rounded-xl border border-slate-200 shadow-2xs">
@@ -219,9 +208,9 @@ export default function TVDisplayView({
                 SOLO<span className="text-slate-800">TECHNO</span>
                 <span className="text-rose-600">PARK</span>
               </h1>
-              <span className="hidden md:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/90 text-[10px] font-black uppercase tracking-wider whitespace-nowrap">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                Lobby TV Live
+              <span className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-900 text-white text-[10px] font-black uppercase tracking-wider whitespace-nowrap">
+                <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+                Lobby TV Display
               </span>
             </div>
             <p className="text-[10px] font-bold text-slate-400 tracking-wider uppercase whitespace-nowrap hidden sm:block">
@@ -230,11 +219,11 @@ export default function TVDisplayView({
           </div>
         </div>
 
-        {/* Center: Sleek Capsule Mode Switcher */}
+        {/* Center: Clean 3-Tab Capsule Mode Switcher */}
         <div className="hidden lg:flex items-center bg-slate-100 p-1 rounded-2xl border border-slate-200/80 shadow-2xs shrink-0">
           <button
             onClick={() => handleModeChange("carousel")}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
+            className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
               tvMode === "carousel"
                 ? "bg-slate-950 text-white shadow-xs"
                 : "text-slate-600 hover:text-slate-900"
@@ -246,7 +235,7 @@ export default function TVDisplayView({
 
           <button
             onClick={() => handleModeChange("today")}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
+            className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
               tvMode === "today"
                 ? "bg-slate-950 text-white shadow-xs"
                 : "text-slate-600 hover:text-slate-900"
@@ -261,7 +250,7 @@ export default function TVDisplayView({
 
           <button
             onClick={() => handleModeChange("split")}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
+            className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
               tvMode === "split"
                 ? "bg-slate-950 text-white shadow-xs"
                 : "text-slate-600 hover:text-slate-900"
@@ -270,36 +259,18 @@ export default function TVDisplayView({
             <Film className="w-3.5 h-3.5" />
             <span>Split Video</span>
           </button>
-
-          <button
-            onClick={() => handleModeChange("all")}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
-              tvMode === "all"
-                ? "bg-slate-950 text-white shadow-xs"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Semua Agenda ({data.length})</span>
-          </button>
         </div>
 
-        {/* Right: Weather, Date, Clock, and Quick Actions */}
-        <div className="flex items-center gap-2.5 shrink-0">
-          {/* Weather & Date */}
-          <div className="hidden xl:flex items-center gap-2 shrink-0">
-            <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-2.5 py-1.5 rounded-xl text-xs font-bold text-slate-700 whitespace-nowrap">
-              <CloudSun className="w-4 h-4 text-amber-500" />
-              <span>Surakarta 31°C</span>
-            </div>
-            <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-slate-50 border border-slate-200 px-2.5 py-1.5 rounded-xl whitespace-nowrap">
-              <Calendar className="w-3.5 h-3.5 text-slate-400" />
-              <span>{date || "Hari Ini"}</span>
-            </div>
+        {/* Right: Date, Clock, and Quick Actions */}
+        <div className="flex items-center gap-3 shrink-0">
+          {/* Date */}
+          <div className="hidden xl:flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl whitespace-nowrap shrink-0">
+            <Calendar className="w-3.5 h-3.5 text-slate-400" />
+            <span>{date || "Hari Ini"}</span>
           </div>
 
           {/* Obsidian Live Digital Clock */}
-          <div className="bg-slate-950 text-white px-3 py-1.5 rounded-xl shadow-xs flex items-center gap-2 border border-slate-800 shrink-0 whitespace-nowrap">
+          <div className="bg-slate-950 text-white px-3.5 py-1.5 rounded-xl shadow-xs flex items-center gap-2 border border-slate-800 shrink-0 whitespace-nowrap">
             <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
             <Clock className="w-4 h-4 text-slate-300" />
             <span className="text-base sm:text-lg font-black font-mono tracking-wider">
@@ -307,48 +278,18 @@ export default function TVDisplayView({
             </span>
           </div>
 
-          {/* Actions: Zoom, Refresh, Fullscreen, Exit */}
+          {/* Actions: Refresh, Fullscreen, Exit */}
           <div className="flex items-center gap-1.5 shrink-0">
-            {/* Zoom Controls */}
-            <div className="hidden sm:flex items-center bg-slate-50 p-0.5 rounded-xl border border-slate-200 shrink-0">
-              <button
-                onClick={() => setTvZoom((z) => Math.max(80, z - 10))}
-                title="Perkecil Tampilan"
-                className="p-1 hover:bg-slate-200 text-slate-700 rounded-lg transition-all"
-              >
-                <ZoomOut className="w-3.5 h-3.5" />
-              </button>
-              <span className="text-[11px] font-bold text-slate-900 px-1 min-w-[34px] text-center">
-                {tvZoom}%
-              </span>
-              <button
-                onClick={() => setTvZoom((z) => Math.min(140, z + 10))}
-                title="Perbesar Tampilan"
-                className="p-1 hover:bg-slate-200 text-slate-700 rounded-lg transition-all"
-              >
-                <ZoomIn className="w-3.5 h-3.5" />
-              </button>
-              {tvZoom !== 100 && (
-                <button
-                  onClick={() => setTvZoom(100)}
-                  title="Reset Zoom"
-                  className="p-1 text-slate-500 hover:text-slate-900"
-                >
-                  <RotateCcw className="w-3 h-3" />
-                </button>
-              )}
-            </div>
-
-            {/* Sync Button */}
+            {/* Sync / Refresh Button */}
             <button
               onClick={onRefresh}
               disabled={isRefreshing}
               title={
                 lastUpdated
-                  ? `Sinkronkan Google Sheets Sekarang (Terakhir: ${new Date(
+                  ? `Muat Ulang Jadwal (Terakhir: ${new Date(
                       lastUpdated
                     ).toLocaleTimeString("id-ID")})`
-                  : "Sinkronkan Google Sheets Sekarang"
+                  : "Muat Ulang Jadwal"
               }
               className="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 rounded-xl transition-all disabled:opacity-50 shrink-0"
             >
@@ -371,7 +312,7 @@ export default function TVDisplayView({
             {/* Exit to Web Button */}
             <button
               onClick={onCloseTvMode}
-              className="px-3 py-1.5 bg-slate-950 hover:bg-black text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-xs shrink-0 whitespace-nowrap"
+              className="px-3.5 py-1.5 bg-slate-950 hover:bg-black text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-xs shrink-0 whitespace-nowrap"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Web Portal</span>
@@ -406,12 +347,6 @@ export default function TVDisplayView({
             <span className="bg-white text-slate-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full border border-slate-200/90 shadow-2xs">
               {displayedItems.length} dari {activeItems.length} Agenda
             </span>
-            {isLive && (
-              <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                Live Sync
-              </span>
-            )}
           </div>
 
           {/* Carousel Slide Page Indicator */}
@@ -462,11 +397,8 @@ export default function TVDisplayView({
           </div>
         )}
 
-        {/* Cards View Container */}
-        <div
-          style={{ zoom: `${tvZoom}%` }}
-          className="flex-1 flex flex-col min-h-0 transition-all duration-150 origin-top"
-        >
+        {/* Cards View Container (Crisp 100% Native Resolution) */}
+        <div className="flex-1 flex flex-col min-h-0">
           {tvMode === "split" ? (
             /* Split Screen Layout (Left Cards, Right Video & Highlights) */
             <div className="grid grid-cols-12 gap-5 h-full min-h-0">
@@ -642,7 +574,7 @@ export default function TVDisplayView({
               Park.
             </span>
             <span>
-              Data agenda diperbarui secara otomatis dan sinkron langsung dengan
+              Data agenda diperbarui secara berkala dan terhubung langsung dengan
               Google Spreadsheet SIVIKA Solo Techno Park.
             </span>
           </div>
