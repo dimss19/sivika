@@ -5,7 +5,6 @@ import Image from "next/image";
 import {
   Clock,
   Calendar,
-  Tv,
   CalendarDays,
   Film,
   Maximize,
@@ -168,16 +167,16 @@ export default function TVDisplayView({
 
   const activeItems = useMemo(() => {
     if (tvMode === "today") {
-      return todayItems.length > 0 ? todayItems : relevantItems.slice(0, 6);
+      return todayItems.length > 0 ? todayItems : relevantItems.slice(0, 7);
     }
     if (tvMode === "split") {
       return relevantItems.slice(0, 16);
     }
-    // "carousel" mode: rotate through the 36 most relevant items (6 slides of 6 cards = a 60-second cycle)
-    return relevantItems.slice(0, 36);
+    // "carousel" mode: rotate through the 35 most relevant items (5 slides of 7 station board rows = a 60-second cycle)
+    return relevantItems.slice(0, 35);
   }, [tvMode, todayItems, relevantItems]);
 
-  const itemsPerPage = tvMode === "split" ? 4 : 6;
+  const itemsPerPage = tvMode === "split" ? 4 : 7;
   const totalPages = Math.max(1, Math.ceil(activeItems.length / itemsPerPage));
 
   const handleModeChange = (newMode: TVModeType) => {
@@ -262,7 +261,7 @@ export default function TVDisplayView({
           </div>
         </div>
 
-        {/* Center: Clean 3-Tab Capsule Mode Switcher */}
+        {/* Center: Clean 3-Tab Station Mode Switcher */}
         <div className="hidden lg:flex items-center bg-slate-100 p-1 rounded-2xl border border-slate-200/80 shadow-2xs shrink-0">
           <button
             onClick={() => handleModeChange("carousel")}
@@ -272,8 +271,8 @@ export default function TVDisplayView({
                 : "text-slate-600 hover:text-slate-900"
             }`}
           >
-            <Tv className="w-3.5 h-3.5" />
-            <span>Carousel Slide</span>
+            <CalendarDays className="w-3.5 h-3.5" />
+            <span>Papan Jadwal</span>
           </button>
 
           <button
@@ -284,7 +283,7 @@ export default function TVDisplayView({
                 : "text-slate-600 hover:text-slate-900"
             }`}
           >
-            <CalendarDays className="w-3.5 h-3.5" />
+            <Clock className="w-3.5 h-3.5" />
             <span>Hari Ini ({todayItems.length})</span>
             {todayItems.length > 0 && (
               <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
@@ -385,22 +384,22 @@ export default function TVDisplayView({
       {/* 3. MAIN TV SCREEN DISPLAY BODY */}
       <main className="flex-1 p-4 sm:p-5 overflow-hidden flex flex-col justify-between min-h-0 bg-slate-50/80">
         {/* Broadcast Status Bar */}
-        <div className="flex items-center justify-between mb-2.5 shrink-0">
+        <div className="flex items-center justify-between mb-2 shrink-0">
           <div className="flex items-center gap-2.5">
             <span className="w-2.5 h-2.5 rounded-full bg-rose-600 animate-pulse" />
             <h2 className="text-sm sm:text-base font-black text-slate-950 tracking-tight">
               {tvMode === "today"
-                ? "Jadwal Agenda Hari Ini"
+                ? "Papan Jadwal Kunjungan Hari Ini"
                 : tvMode === "split"
-                ? "Agenda Kunjungan & Profil Kawasan Solo Techno Park"
-                : "Display Digital Signage Agenda Solo Techno Park"}
+                ? "Papan Jadwal Kunjungan & Video Kawasan STP"
+                : "Papan Informasi Jadwal Kunjungan Solo Techno Park"}
             </h2>
             <span className="bg-white text-slate-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full border border-slate-200/90 shadow-2xs">
               {displayedItems.length} dari {activeItems.length} Agenda
             </span>
           </div>
 
-          {/* Carousel Slide Page Indicator */}
+          {/* Station Board Page Indicator & Controls */}
           {totalPages > 1 && (
             <div className="flex items-center gap-2 text-xs font-bold text-slate-600">
               <span className="bg-white border border-slate-200/90 px-3 py-1 rounded-xl shadow-2xs text-slate-800 text-[11px]">
@@ -442,19 +441,36 @@ export default function TVDisplayView({
             <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
             <span>
               Tidak ada agenda kunjungan khusus untuk hari ini (
-              {date || "Hari Ini"}). Menampilkan jadwal resmi terdekat berikutnya
-              Solo Techno Park:
+              {date || "Hari Ini"}). Menampilkan jadwal resmi terdekat berikutnya:
             </span>
           </div>
         )}
 
-        {/* Cards View Container (Crisp 100% Native Resolution) */}
+        {/* Station Board Display Container */}
         <div className="flex-1 flex flex-col min-h-0">
           {tvMode === "split" ? (
-            /* Split Screen Layout (Left Cards, Right Video & Highlights) */
+            /* Split Screen Layout (Left Station Rows, Right Video) */
             <div className="grid grid-cols-12 gap-5 h-full min-h-0">
               <div className="col-span-7 flex flex-col h-full min-h-0">
-                <div className="grid grid-cols-2 gap-3.5 flex-1 min-h-0 overflow-hidden pr-0.5">
+                {/* Station Board Column Headers */}
+                <div className="bg-slate-950 text-white rounded-2xl px-4 py-2.5 text-[11px] font-mono uppercase tracking-wider flex items-center font-bold border border-slate-800 shadow-xs mb-2 shrink-0">
+                  <div className="w-40 shrink-0 flex items-center gap-1.5 pl-1">
+                    <Clock className="w-3 h-3 text-rose-500" />
+                    <span>WAKTU</span>
+                  </div>
+                  <div className="flex-1 min-w-0 pr-3">
+                    <span>INSTANSI & AGENDA</span>
+                  </div>
+                  <div className="w-36 shrink-0 flex items-center gap-1.5 pr-2">
+                    <MapPin className="w-3 h-3 text-rose-500" />
+                    <span>RUANGAN</span>
+                  </div>
+                  <div className="w-24 shrink-0 text-center">
+                    <span>STATUS</span>
+                  </div>
+                </div>
+
+                <div className="flex-1 flex flex-col justify-between gap-2 min-h-0 overflow-hidden">
                   {displayedItems.map((item, index) => {
                     const cat = getCategoryBadge(item.kategori);
                     const formattedKegiatan = formatKegiatan(item.kegiatan);
@@ -462,49 +478,69 @@ export default function TVDisplayView({
                       <div
                         key={`${activePage}-${item.id}`}
                         onClick={() => onSelectItem(item)}
-                        className={`animate-card-enter stagger-${(index % 4) + 1} bg-white border border-slate-200 hover:border-slate-400 rounded-2xl p-4 shadow-2xs hover:shadow-xl hover:-translate-y-1.5 flex flex-col justify-between cursor-pointer transition-all duration-300 ease-out relative overflow-hidden group border-t-4 border-t-slate-900 hover:border-t-rose-600`}
+                        className={`animate-card-enter stagger-${(index % 4) + 1} bg-white hover:bg-slate-100/90 border border-slate-200/90 hover:border-slate-400 rounded-2xl px-4 py-3 flex items-center shadow-2xs hover:shadow-md transition-all duration-200 cursor-pointer group relative overflow-hidden shrink-0 flex-1 min-h-[56px]`}
                       >
-                        <div>
-                          <div className="flex items-center justify-between gap-1.5">
-                            <span className="bg-slate-950 text-white font-mono text-[11px] font-bold px-2 py-0.5 rounded-lg flex items-center gap-1 shadow-xs group-hover:bg-slate-900 transition-colors">
-                              <Clock className="w-3 h-3 text-rose-400" />
-                              {item.timeFormatted}
-                            </span>
+                        <div
+                          className={`absolute left-0 top-0 bottom-0 w-1.5 ${
+                            item.isToday
+                              ? "bg-rose-600"
+                              : "bg-slate-900 group-hover:bg-rose-600"
+                          } transition-colors duration-200`}
+                        />
+
+                        {/* Waktu & Tanggal */}
+                        <div className="w-40 shrink-0 pl-1.5">
+                          <div className="bg-slate-950 text-white font-mono text-xs font-bold px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-xs w-fit group-hover:bg-slate-900 transition-colors">
+                            <Clock className="w-3 h-3 text-rose-400" />
+                            <span>{item.timeFormatted}</span>
+                          </div>
+                          <p className="text-[10px] text-slate-500 mt-0.5 truncate font-medium">
+                            {item.dateFormatted || item.rawDateTime}
+                          </p>
+                        </div>
+
+                        {/* Instansi & Kegiatan */}
+                        <div className="flex-1 min-w-0 pr-3">
+                          <h3 className="text-sm font-black text-slate-950 group-hover:text-rose-600 transition-colors tracking-tight truncate">
+                            {item.instansi}
+                          </h3>
+                          <div className="flex items-center gap-1.5 mt-0.5">
                             <span
-                              className={`text-[9px] font-bold px-2 py-0.5 rounded-md border uppercase tracking-wider ${cat.badge}`}
+                              className={`text-[8px] font-bold px-1.5 py-0.2 rounded border uppercase tracking-wider shrink-0 ${cat.badge}`}
                             >
                               {cat.label}
                             </span>
-                          </div>
-
-                          <h3 className="text-base font-black text-slate-950 group-hover:text-rose-600 transition-colors duration-200 line-clamp-1 mt-2.5 mb-1 tracking-tight">
-                            {item.instansi}
-                          </h3>
-
-                          <div className="bg-slate-50 border border-slate-150 rounded-xl p-2 text-xs font-semibold text-slate-700 leading-snug line-clamp-2 group-hover:bg-slate-100/70 transition-colors">
-                            {formattedKegiatan}
-                          </div>
-
-                          <div className="flex items-center gap-1 text-[11px] text-slate-500 mt-1.5 font-medium">
-                            <Calendar className="w-3 h-3 text-slate-400 shrink-0" />
-                            <span>{item.dateFormatted || item.rawDateTime}</span>
+                            <span className="text-[11px] text-slate-600 truncate font-semibold">
+                              {formattedKegiatan}
+                            </span>
                           </div>
                         </div>
 
-                        <div className="pt-2.5 mt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
-                          <div className="flex items-center gap-1.5 font-bold text-slate-900 truncate max-w-[65%]">
-                            <div className="w-5 h-5 rounded-md bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 border border-rose-100 group-hover:scale-110 group-hover:bg-rose-100 transition-all duration-200">
-                              <MapPin className="w-3 h-3" />
-                            </div>
-                            <span className="truncate text-[11px]">
-                              {item.tempat}
-                            </span>
+                        {/* Ruangan */}
+                        <div className="w-36 shrink-0 flex items-center gap-1.5 pr-2">
+                          <div className="w-6 h-6 rounded-md bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 border border-rose-100 group-hover:scale-110 group-hover:bg-rose-100 transition-all">
+                            <MapPin className="w-3 h-3" />
                           </div>
-                          <span className="text-[10px] font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md shrink-0 group-hover:bg-slate-200 transition-colors">
-                            {item.jumlahPeserta && item.jumlahPeserta !== "-"
-                              ? `${item.jumlahPeserta} Pax`
-                              : "Rombongan"}
+                          <span className="text-xs font-bold text-slate-900 truncate">
+                            {item.tempat}
                           </span>
+                        </div>
+
+                        {/* Status */}
+                        <div className="w-24 shrink-0 text-center">
+                          {item.isToday ? (
+                            <span className="inline-flex items-center gap-1 text-[9px] font-black uppercase tracking-wider bg-rose-600 text-white px-2 py-0.5 rounded-full shadow-xs animate-pulse">
+                              HARI INI
+                            </span>
+                          ) : item.isUpcoming ? (
+                            <span className="inline-flex items-center text-[9px] font-bold uppercase tracking-wider bg-slate-950 text-white px-2.5 py-0.5 rounded-full shadow-2xs">
+                              TERJADWAL
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center text-[9px] font-semibold uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200 px-2 py-0.5 rounded-full">
+                              SELESAI
+                            </span>
+                          )}
                         </div>
                       </div>
                     );
@@ -517,80 +553,139 @@ export default function TVDisplayView({
               </div>
             </div>
           ) : (
-            /* Full 6-Card Grid Layout (3 cols x 2 rows, perfectly proportioned) */
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5 flex-1 min-h-0 overflow-hidden pr-0.5">
-              {displayedItems.map((item, index) => {
-                const cat = getCategoryBadge(item.kategori);
-                const formattedKegiatan = formatKegiatan(item.kegiatan);
-                return (
-                  <div
-                    key={`${activePage}-${item.id}`}
-                    onClick={() => onSelectItem(item)}
-                    className={`animate-card-enter stagger-${(index % 6) + 1} bg-white border border-slate-200 hover:border-slate-400 rounded-3xl p-4 sm:p-5 shadow-2xs hover:shadow-xl hover:-translate-y-1.5 flex flex-col justify-between cursor-pointer transition-all duration-300 ease-out relative overflow-hidden group border-t-4 border-t-slate-900 hover:border-t-rose-600`}
-                  >
-                    <div>
-                      {/* Top Bar: Time Pill + Category & Status Badges */}
-                      <div className="flex items-center justify-between gap-2">
-                        {/* Time Pill */}
-                        <div className="bg-slate-950 text-white font-mono text-xs font-bold px-3 py-1 rounded-xl flex items-center gap-1.5 shadow-xs group-hover:bg-slate-900 transition-colors">
-                          <Clock className="w-3.5 h-3.5 text-rose-400" />
+            /* Full Railway Station Departure Board Layout (Clean, Tabular, High-Contrast PIDS) */
+            <div className="flex-1 flex flex-col min-h-0">
+              {/* Station Board Column Headers Bar */}
+              <div className="bg-slate-950 text-white rounded-2xl px-5 py-2.5 text-xs font-mono uppercase tracking-wider flex items-center font-bold border border-slate-800 shadow-xs mb-2 shrink-0">
+                <div className="w-48 lg:w-56 shrink-0 flex items-center gap-1.5 pl-2">
+                  <Clock className="w-3.5 h-3.5 text-rose-500" />
+                  <span>WAKTU & TANGGAL</span>
+                </div>
+                <div className="w-64 lg:w-80 xl:w-96 shrink-0 pr-4">
+                  <span>INSTANSI / TAMU</span>
+                </div>
+                <div className="flex-1 min-w-0 pr-4 hidden md:block">
+                  <span>AGENDA KEGIATAN</span>
+                </div>
+                <div className="w-44 lg:w-52 shrink-0 flex items-center gap-1.5 pr-3">
+                  <MapPin className="w-3.5 h-3.5 text-rose-500" />
+                  <span>LOKASI RUANGAN</span>
+                </div>
+                <div className="w-24 lg:w-28 shrink-0 text-center">
+                  <span>PESERTA</span>
+                </div>
+                <div className="w-28 lg:w-32 shrink-0 text-center">
+                  <span>STATUS</span>
+                </div>
+              </div>
+
+              {/* Station Board Departure Rows (7 Rows per Slide) */}
+              <div className="flex-1 flex flex-col justify-between gap-1.5 min-h-0 overflow-hidden">
+                {displayedItems.map((item, index) => {
+                  const cat = getCategoryBadge(item.kategori);
+                  const formattedKegiatan = formatKegiatan(item.kegiatan);
+                  return (
+                    <div
+                      key={`${activePage}-${item.id}`}
+                      onClick={() => onSelectItem(item)}
+                      className={`animate-card-enter stagger-${(index % 7) + 1} bg-white hover:bg-slate-100/90 border border-slate-200/90 hover:border-slate-400 rounded-2xl px-4 sm:px-5 py-2.5 flex items-center shadow-2xs hover:shadow-md transition-all duration-200 cursor-pointer group relative overflow-hidden shrink-0 flex-1 min-h-[48px]`}
+                    >
+                      {/* Left Status Accent Indicator Bar */}
+                      <div
+                        className={`absolute left-0 top-0 bottom-0 w-1.5 ${
+                          item.isToday
+                            ? "bg-rose-600"
+                            : "bg-slate-900 group-hover:bg-rose-600"
+                        } transition-colors duration-200`}
+                      />
+
+                      {/* 1. WAKTU & TANGGAL */}
+                      <div className="w-48 lg:w-56 shrink-0 flex items-center gap-2.5 pl-2">
+                        <div className="bg-slate-950 text-white font-mono text-xs sm:text-sm font-bold px-2.5 py-1 rounded-xl flex items-center gap-1 shadow-xs shrink-0 group-hover:bg-slate-900 transition-colors">
+                          <Clock className="w-3.5 h-3.5 text-rose-400 shrink-0" />
                           <span>{item.timeFormatted}</span>
                         </div>
-
-                        {/* Badges */}
-                        <div className="flex items-center gap-1.5">
-                          {item.isToday && (
-                            <span className="bg-rose-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-lg uppercase tracking-wider animate-pulse flex items-center gap-1 shadow-xs">
-                              <span className="w-1.5 h-1.5 rounded-full bg-white" />
-                              HARI INI
-                            </span>
-                          )}
-                          <span
-                            className={`text-[10px] font-bold px-2.5 py-0.5 rounded-lg border uppercase tracking-wider ${cat.badge}`}
-                          >
-                            {cat.label}
-                          </span>
+                        <div className="text-[11px] sm:text-xs font-semibold text-slate-500 truncate">
+                          {item.dateFormatted || item.rawDateTime}
                         </div>
                       </div>
 
-                      {/* Institution / Guest Name */}
-                      <h3 className="text-lg sm:text-xl font-black text-slate-950 group-hover:text-rose-600 transition-colors duration-200 line-clamp-1 mt-3 mb-1.5 tracking-tight">
-                        {item.instansi}
-                      </h3>
-
-                      {/* Activity / Event Box */}
-                      <div className="bg-slate-50 border border-slate-150 rounded-xl p-2.5 text-xs sm:text-sm font-semibold text-slate-700 leading-snug line-clamp-2 group-hover:bg-slate-100/70 transition-colors">
-                        {formattedKegiatan}
+                      {/* 2. INSTANSI / ROMBONGAN TAMU */}
+                      <div className="w-64 lg:w-80 xl:w-96 shrink-0 pr-4">
+                        <h3 className="text-sm sm:text-base lg:text-lg font-black text-slate-950 group-hover:text-rose-600 transition-colors tracking-tight truncate">
+                          {item.instansi}
+                        </h3>
+                        {item.pic && item.pic !== "-" && (
+                          <p className="text-[10px] text-slate-400 truncate">
+                            PIC: {item.pic}
+                          </p>
+                        )}
                       </div>
 
-                      {/* Date */}
-                      <div className="flex items-center gap-1.5 text-xs font-medium text-slate-500 mt-2">
-                        <Calendar className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                        <span>{item.dateFormatted || item.rawDateTime}</span>
-                      </div>
-                    </div>
-
-                    {/* Footer Row: Room/Location + Participants */}
-                    <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                      <div className="flex items-center gap-2 font-bold text-slate-900 truncate max-w-[65%]">
-                        <div className="w-6 h-6 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 border border-rose-100 group-hover:scale-110 group-hover:bg-rose-100 transition-all duration-200">
-                          <MapPin className="w-3.5 h-3.5" />
-                        </div>
-                        <span className="truncate text-xs">{item.tempat}</span>
-                      </div>
-
-                      <div className="flex items-center gap-1.5 font-bold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-lg shrink-0 group-hover:bg-slate-200 transition-colors">
-                        <Users className="w-3.5 h-3.5 text-slate-400" />
-                        <span className="text-xs">
-                          {item.jumlahPeserta && item.jumlahPeserta !== "-"
-                            ? `${item.jumlahPeserta} Peserta`
-                            : "Rombongan"}
+                      {/* 3. AGENDA KEGIATAN */}
+                      <div className="flex-1 min-w-0 pr-4 hidden md:flex items-center gap-2">
+                        <span
+                          className={`text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-md border uppercase tracking-wider shrink-0 ${cat.badge}`}
+                        >
+                          {cat.label}
+                        </span>
+                        <span className="text-xs sm:text-sm font-semibold text-slate-700 truncate">
+                          {formattedKegiatan}
                         </span>
                       </div>
+
+                      {/* 4. RUANGAN / LOKASI */}
+                      <div className="w-44 lg:w-52 shrink-0 flex items-center gap-2 pr-3">
+                        <div className="w-6 h-6 lg:w-7 lg:h-7 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 border border-rose-100 group-hover:scale-110 group-hover:bg-rose-100 transition-all duration-200">
+                          <MapPin className="w-3.5 h-3.5" />
+                        </div>
+                        <span className="text-xs sm:text-sm font-bold text-slate-900 truncate">
+                          {item.tempat}
+                        </span>
+                      </div>
+
+                      {/* 5. PESERTA */}
+                      <div className="w-24 lg:w-28 shrink-0 text-center">
+                        <span className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-lg">
+                          <Users className="w-3 h-3 text-slate-400" />
+                          <span>
+                            {item.jumlahPeserta && item.jumlahPeserta !== "-"
+                              ? `${item.jumlahPeserta} Pax`
+                              : "Rombongan"}
+                          </span>
+                        </span>
+                      </div>
+
+                      {/* 6. STATUS */}
+                      <div className="w-28 lg:w-32 shrink-0 text-center">
+                        {item.isToday ? (
+                          <span className="inline-flex items-center gap-1.5 text-[10px] sm:text-xs font-black uppercase tracking-wider bg-rose-600 text-white px-3 py-1 rounded-full shadow-xs animate-pulse">
+                            <span className="w-1.5 h-1.5 rounded-full bg-white" />
+                            HARI INI
+                          </span>
+                        ) : item.status.toLowerCase() === "reschedule" ? (
+                          <span className="inline-flex items-center text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-300 px-3 py-1 rounded-full">
+                            RESCHEDULE
+                          </span>
+                        ) : item.status.toLowerCase() === "cancel" ? (
+                          <span className="inline-flex items-center text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-slate-200 text-slate-600 px-3 py-1 rounded-full">
+                            BATAL
+                          </span>
+                        ) : item.isUpcoming ? (
+                          <span className="inline-flex items-center gap-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-slate-950 text-white px-3 py-1 rounded-full shadow-2xs">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                            TERJADWAL
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center text-[10px] sm:text-xs font-semibold uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200 px-3 py-1 rounded-full">
+                            SELESAI
+                          </span>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           )}
         </div>

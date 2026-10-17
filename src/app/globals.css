@@ -53,6 +53,8 @@
 .stagger-4 { animation-delay: 0.16s; }
 .stagger-5 { animation-delay: 0.20s; }
 .stagger-6 { animation-delay: 0.24s; }
+.stagger-7 { animation-delay: 0.28s; }
+.stagger-8 { animation-delay: 0.32s; }
 
 /* Gentle floating ambient animation */
 @keyframes floatSlow {
