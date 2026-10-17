@@ -469,26 +469,26 @@ export default function TVDisplayView({
                 <button
                   onClick={() => handleLayoutChange("rows")}
                   title="Tampilan Baris (Tabel)"
-                  className={`px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 text-xs font-bold ${
+                  aria-label="Tampilan Baris"
+                  className={`p-1.5 sm:p-2 rounded-lg transition-all flex items-center justify-center ${
                     cardLayout === "rows"
                       ? "bg-slate-950 text-white shadow-xs"
                       : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
                   }`}
                 >
-                  <LayoutList className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Baris</span>
+                  <LayoutList className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => handleLayoutChange("grid")}
                   title="Tampilan Kotak (Grid)"
-                  className={`px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 text-xs font-bold ${
+                  aria-label="Tampilan Kotak"
+                  className={`p-1.5 sm:p-2 rounded-lg transition-all flex items-center justify-center ${
                     cardLayout === "grid"
                       ? "bg-slate-950 text-white shadow-xs"
                       : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
                   }`}
                 >
-                  <LayoutGrid className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Kotak</span>
+                  <LayoutGrid className="w-4 h-4" />
                 </button>
               </div>
             )}
