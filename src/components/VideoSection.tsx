@@ -10,12 +10,13 @@ export default function VideoSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Text */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-rose-600 uppercase tracking-widest bg-rose-50 px-3 py-1 rounded-full border border-rose-200">
-              <Play className="w-3.5 h-3.5 fill-rose-600" />
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-800 uppercase tracking-widest bg-slate-100 px-3 py-1 rounded-full border border-slate-200">
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-600" />
+              <Play className="w-3.5 h-3.5 fill-slate-700 text-slate-700" />
               <span>Video Profil Kawasan</span>
             </div>
 
-            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
+            <h2 className="text-2xl sm:text-4xl font-black text-slate-950 tracking-tight">
               Mengenal Lebih Dekat Solo Techno Park
             </h2>
 
@@ -27,7 +28,7 @@ export default function VideoSection() {
 
             <div className="space-y-3 pt-2">
               <div className="flex items-start gap-3 p-3.5 bg-slate-50 rounded-2xl border border-slate-200/80">
-                <div className="p-2 bg-rose-100 text-rose-600 rounded-xl shrink-0 mt-0.5">
+                <div className="p-2 bg-slate-100 text-slate-900 rounded-xl shrink-0 mt-0.5">
                   <Award className="w-4 h-4" />
                 </div>
                 <div>
@@ -41,7 +42,7 @@ export default function VideoSection() {
               </div>
 
               <div className="flex items-start gap-3 p-3.5 bg-slate-50 rounded-2xl border border-slate-200/80">
-                <div className="p-2 bg-rose-100 text-rose-600 rounded-xl shrink-0 mt-0.5">
+                <div className="p-2 bg-slate-100 text-slate-900 rounded-xl shrink-0 mt-0.5">
                   <Sparkles className="w-4 h-4" />
                 </div>
                 <div>

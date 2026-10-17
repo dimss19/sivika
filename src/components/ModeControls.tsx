@@ -48,15 +48,15 @@ export default function ModeControls({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-white rounded-3xl p-6 w-full max-w-xl shadow-2xl border-2 border-rose-100 space-y-6 animate-in fade-in zoom-in-95 duration-200">
+      <div className="bg-white rounded-3xl p-6 w-full max-w-xl shadow-2xl border border-slate-200 space-y-6 animate-in fade-in zoom-in-95 duration-200">
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-slate-100">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 bg-rose-600 text-white rounded-xl shadow-md shadow-rose-600/20">
+            <div className="p-2 bg-slate-950 text-white rounded-xl shadow-xs">
               <SlidersHorizontal className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-extrabold text-slate-900">
+              <h2 className="text-lg font-extrabold text-slate-950">
                 Pengaturan Tampilan Layar TV
               </h2>
               <p className="text-xs text-slate-500 font-medium">
@@ -86,17 +86,18 @@ export default function ModeControls({
               }}
               className={`p-4 rounded-2xl border-2 text-left transition-all relative ${
                 mode === "today"
-                  ? "bg-rose-50/80 border-rose-600 shadow-sm"
-                  : "bg-slate-50/50 border-slate-200 hover:border-rose-300"
+                  ? "bg-slate-50 border-slate-900 shadow-xs"
+                  : "bg-slate-50/50 border-slate-200 hover:border-slate-400"
               }`}
             >
               <div className="flex items-center justify-between mb-2">
                 <CalendarDays
                   className={`w-5 h-5 ${
-                    mode === "today" ? "text-rose-600" : "text-slate-500"
+                    mode === "today" ? "text-slate-950" : "text-slate-500"
                   }`}
                 />
-                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-800">
+                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-800 flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
                   {todayCount} Agenda
                 </span>
               </div>
@@ -114,14 +115,14 @@ export default function ModeControls({
               }}
               className={`p-4 rounded-2xl border-2 text-left transition-all relative ${
                 mode === "carousel"
-                  ? "bg-rose-50/80 border-rose-600 shadow-sm"
-                  : "bg-slate-50/50 border-slate-200 hover:border-rose-300"
+                  ? "bg-slate-50 border-slate-900 shadow-xs"
+                  : "bg-slate-50/50 border-slate-200 hover:border-slate-400"
               }`}
             >
               <div className="flex items-center justify-between mb-2">
                 <Tv
                   className={`w-5 h-5 ${
-                    mode === "carousel" ? "text-rose-600" : "text-slate-500"
+                    mode === "carousel" ? "text-slate-950" : "text-slate-500"
                   }`}
                 />
                 <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-800">
@@ -142,17 +143,17 @@ export default function ModeControls({
               }}
               className={`p-4 rounded-2xl border-2 text-left transition-all relative ${
                 mode === "split"
-                  ? "bg-rose-50/80 border-rose-600 shadow-sm"
-                  : "bg-slate-50/50 border-slate-200 hover:border-rose-300"
+                  ? "bg-slate-50 border-slate-900 shadow-xs"
+                  : "bg-slate-50/50 border-slate-200 hover:border-slate-400"
               }`}
             >
               <div className="flex items-center justify-between mb-2">
                 <Film
                   className={`w-5 h-5 ${
-                    mode === "split" ? "text-rose-600" : "text-slate-500"
+                    mode === "split" ? "text-slate-950" : "text-slate-500"
                   }`}
                 />
-                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800">
+                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-800">
                   Dual Screen
                 </span>
               </div>
@@ -170,17 +171,17 @@ export default function ModeControls({
               }}
               className={`p-4 rounded-2xl border-2 text-left transition-all relative ${
                 mode === "range"
-                  ? "bg-rose-50/80 border-rose-600 shadow-sm"
-                  : "bg-slate-50/50 border-slate-200 hover:border-rose-300"
+                  ? "bg-slate-50 border-slate-900 shadow-xs"
+                  : "bg-slate-50/50 border-slate-200 hover:border-slate-400"
               }`}
             >
               <div className="flex items-center justify-between mb-2">
                 <Sparkles
                   className={`w-5 h-5 ${
-                    mode === "range" ? "text-rose-600" : "text-slate-500"
+                    mode === "range" ? "text-slate-950" : "text-slate-500"
                   }`}
                 />
-                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-800">
                   {totalCount} Total
                 </span>
               </div>
@@ -196,10 +197,10 @@ export default function ModeControls({
         <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-              <Clock className="w-4 h-4 text-rose-600" />
+              <Clock className="w-4 h-4 text-slate-600" />
               Durasi Ganti Slide Otomatis:
             </span>
-            <span className="text-xs font-extrabold text-rose-700 bg-rose-100 px-2 py-0.5 rounded-md">
+            <span className="text-xs font-extrabold text-white bg-slate-900 px-2.5 py-0.5 rounded-md">
               {slideInterval} Detik
             </span>
           </div>
@@ -210,7 +211,7 @@ export default function ModeControls({
             step="2"
             value={slideInterval}
             onChange={(e) => onIntervalChange(Number(e.target.value))}
-            className="w-full accent-rose-600 cursor-pointer"
+            className="w-full accent-slate-900 cursor-pointer"
           />
           <div className="flex justify-between text-[10px] text-slate-400 font-semibold">
             <span>6 detik (Cepat)</span>
@@ -231,7 +232,7 @@ export default function ModeControls({
               placeholder="Contoh: Universitas, SMK, Gedung RnD, GoTo..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10"
             />
           </div>
         </div>
@@ -243,13 +244,13 @@ export default function ModeControls({
             disabled={isRefreshing}
             className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold flex items-center gap-2 transition-all disabled:opacity-60"
           >
-            <RefreshCw className={`w-4 h-4 ${isRefreshing ? "animate-spin text-rose-600" : ""}`} />
+            <RefreshCw className={`w-4 h-4 ${isRefreshing ? "animate-spin text-slate-900" : ""}`} />
             <span>{isRefreshing ? "Menyinkronkan..." : "Sinkronkan Spreadsheet"}</span>
           </button>
 
           <button
             onClick={onClose}
-            className="px-6 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold shadow-md shadow-rose-600/20 transition-all"
+            className="px-6 py-2.5 bg-slate-900 hover:bg-black text-white rounded-xl text-xs font-bold shadow-xs transition-all"
           >
             Terapkan & Tutup
           </button>

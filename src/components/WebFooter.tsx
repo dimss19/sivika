@@ -22,8 +22,8 @@ export default function WebFooter() {
                   className="object-contain"
                 />
               </div>
-              <span className="text-xl font-black text-slate-900">
-                SOLO<span className="text-rose-600">TECHNOPARK</span>
+              <span className="text-xl font-black text-slate-950">
+                SOLO<span className="text-slate-900">TECHNO</span><span className="text-rose-600">PARK</span>
               </span>
             </div>
 
@@ -34,7 +34,8 @@ export default function WebFooter() {
             </p>
 
             <div className="pt-2">
-              <span className="text-[11px] font-extrabold text-rose-600 uppercase tracking-widest block mb-0.5">
+              <span className="text-[11px] font-extrabold text-slate-900 uppercase tracking-widest flex items-center gap-1.5 mb-0.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-rose-600" />
                 SIVIKA v2.0
               </span>
               <p className="text-xs text-slate-500 font-medium">
@@ -45,27 +46,27 @@ export default function WebFooter() {
 
           {/* Col 2: Quick Links */}
           <div className="md:col-span-3 space-y-3 text-xs font-semibold">
-            <h4 className="text-sm font-extrabold text-slate-900 tracking-wider uppercase mb-3">
+            <h4 className="text-sm font-extrabold text-slate-950 tracking-wider uppercase mb-3">
               Tautan Navigasi
             </h4>
             <ul className="space-y-2 text-slate-600">
               <li>
-                <a href="#profil" className="hover:text-rose-600 transition-colors">
+                <a href="#profil" className="hover:text-slate-950 transition-colors">
                   Profil & Sejarah STP
                 </a>
               </li>
               <li>
-                <a href="#fasilitas" className="hover:text-rose-600 transition-colors">
+                <a href="#fasilitas" className="hover:text-slate-950 transition-colors">
                   Fasilitas & Gedung
                 </a>
               </li>
               <li>
-                <a href="#jadwal" className="hover:text-rose-600 transition-colors">
+                <a href="#jadwal" className="hover:text-slate-950 transition-colors">
                   Jadwal Kunjungan Terbuka
                 </a>
               </li>
               <li>
-                <a href="#video" className="hover:text-rose-600 transition-colors">
+                <a href="#video" className="hover:text-slate-950 transition-colors">
                   Video Profil Resmi
                 </a>
               </li>
@@ -74,7 +75,7 @@ export default function WebFooter() {
                   href={SPREADSHEET_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-rose-600 transition-colors flex items-center gap-1 text-rose-600 font-bold"
+                  className="hover:text-slate-950 transition-colors flex items-center gap-1 text-slate-800 font-bold"
                 >
                   <span>Google Spreadsheet Jadwal</span>
                   <ExternalLink className="w-3.5 h-3.5" />
@@ -85,22 +86,22 @@ export default function WebFooter() {
 
           {/* Col 3: Contact & Address */}
           <div className="md:col-span-4 space-y-3 text-xs font-semibold">
-            <h4 className="text-sm font-extrabold text-slate-900 tracking-wider uppercase mb-3">
+            <h4 className="text-sm font-extrabold text-slate-950 tracking-wider uppercase mb-3">
               Kontak & Lokasi
             </h4>
             <div className="space-y-2.5 text-slate-600">
               <div className="flex items-start gap-2.5">
-                <MapPin className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+                <MapPin className="w-4 h-4 text-slate-700 shrink-0 mt-0.5" />
                 <span>
                   Jl. Ki Hajar Dewantara No. 19, Jebres, Kec. Jebres, Kota Surakarta, Jawa Tengah 57126
                 </span>
               </div>
               <div className="flex items-center gap-2.5">
-                <Phone className="w-4 h-4 text-rose-600 shrink-0" />
+                <Phone className="w-4 h-4 text-slate-700 shrink-0" />
                 <span>(0271) 666628 / +62 811-2651-789</span>
               </div>
               <div className="flex items-center gap-2.5">
-                <Mail className="w-4 h-4 text-rose-600 shrink-0" />
+                <Mail className="w-4 h-4 text-slate-700 shrink-0" />
                 <span>info@solotechnopark.id</span>
               </div>
             </div>

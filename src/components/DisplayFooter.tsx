@@ -31,10 +31,11 @@ export default function DisplayFooter({
   ];
 
   return (
-    <footer className="w-full bg-white text-slate-800 shrink-0 border-t-2 border-rose-600 flex items-center justify-between text-xs overflow-hidden relative z-20 shadow-xs">
-      {/* Red STP Announcement Badge */}
-      <div className="bg-rose-600 text-white font-extrabold px-4 py-2.5 flex items-center gap-2 shrink-0 shadow-xs tracking-wider text-xs uppercase">
-        <Megaphone className="w-4 h-4 text-white animate-bounce" />
+    <footer className="w-full bg-white text-slate-800 shrink-0 border-t border-slate-200 flex items-center justify-between text-xs overflow-hidden relative z-20 shadow-xs">
+      {/* Sleek Obsidian STP Announcement Badge */}
+      <div className="bg-slate-950 text-white font-extrabold px-4 py-2.5 flex items-center gap-2 shrink-0 shadow-xs tracking-wider text-xs uppercase">
+        <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+        <Megaphone className="w-4 h-4 text-slate-300" />
         <span>INFO LOBI STP</span>
       </div>
 
@@ -43,7 +44,7 @@ export default function DisplayFooter({
         <div className="animate-marquee inline-flex items-center gap-12 font-semibold text-slate-800">
           {tickerMessages.concat(tickerMessages).map((msg, idx) => (
             <div key={idx} className="inline-flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-rose-600" />
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-600" />
               <span>{msg}</span>
             </div>
           ))}
@@ -57,7 +58,7 @@ export default function DisplayFooter({
           title="Buka Pengaturan Mode Tampilan"
           className={`p-2 rounded-xl transition-all flex items-center gap-1.5 text-xs font-bold border ${
             showControls
-              ? "bg-rose-600 text-white border-rose-600"
+              ? "bg-slate-900 text-white border-slate-900"
               : "bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200/80"
           }`}
         >

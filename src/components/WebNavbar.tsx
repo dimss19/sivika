@@ -35,7 +35,7 @@ export default function WebNavbar({
           {/* Brand Logo & Title */}
           <div className="flex items-center gap-3.5">
             <a href="#" className="flex items-center gap-3 group">
-              <div className="relative w-14 h-12 flex items-center justify-center p-1 bg-white rounded-xl border border-slate-100 shadow-xs group-hover:border-rose-300 transition-all">
+              <div className="relative w-14 h-12 flex items-center justify-center p-1 bg-white rounded-xl border border-slate-200 shadow-xs group-hover:border-slate-400 transition-all">
                 <Image
                   src="/logo.png"
                   alt="Solo Techno Park"
@@ -47,10 +47,11 @@ export default function WebNavbar({
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="font-extrabold text-lg sm:text-xl tracking-tight text-slate-900">
-                    SOLO<span className="text-rose-600">TECHNOPARK</span>
+                  <span className="font-extrabold text-lg sm:text-xl tracking-tight text-slate-950">
+                    SOLO<span className="text-slate-900">TECHNO</span><span className="text-rose-600">PARK</span>
                   </span>
-                  <span className="hidden sm:inline-block bg-rose-50 text-rose-700 text-[10px] font-extrabold px-2 py-0.5 rounded-full border border-rose-200">
+                  <span className="hidden sm:inline-flex items-center gap-1 bg-slate-900 text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
+                    <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
                     SIVIKA
                   </span>
                 </div>
@@ -65,32 +66,32 @@ export default function WebNavbar({
           <nav className="hidden lg:flex items-center gap-1 text-xs font-bold text-slate-700">
             <a
               href="#profil"
-              className="px-3.5 py-2 rounded-xl hover:text-rose-600 hover:bg-slate-50 transition-all"
+              className="px-3.5 py-2 rounded-xl hover:text-slate-950 hover:bg-slate-100 transition-all"
             >
               Profil STP
             </a>
             <a
               href="#fasilitas"
-              className="px-3.5 py-2 rounded-xl hover:text-rose-600 hover:bg-slate-50 transition-all"
+              className="px-3.5 py-2 rounded-xl hover:text-slate-950 hover:bg-slate-100 transition-all"
             >
               Fasilitas & Kawasan
             </a>
             <a
               href="#jadwal"
-              className="px-3.5 py-2 rounded-xl hover:text-rose-600 hover:bg-slate-50 transition-all flex items-center gap-1.5"
+              className="px-3.5 py-2 rounded-xl hover:text-slate-950 hover:bg-slate-100 transition-all flex items-center gap-1.5"
             >
-              <Calendar className="w-4 h-4 text-rose-600" />
+              <Calendar className="w-4 h-4 text-slate-500" />
               <span>Jadwal Kunjungan</span>
             </a>
             <a
               href="#video"
-              className="px-3.5 py-2 rounded-xl hover:text-rose-600 hover:bg-slate-50 transition-all"
+              className="px-3.5 py-2 rounded-xl hover:text-slate-950 hover:bg-slate-100 transition-all"
             >
               Video Profil
             </a>
             <a
               href="#kontak"
-              className="px-3.5 py-2 rounded-xl hover:text-rose-600 hover:bg-slate-50 transition-all"
+              className="px-3.5 py-2 rounded-xl hover:text-slate-950 hover:bg-slate-100 transition-all"
             >
               Kontak
             </a>
@@ -99,7 +100,7 @@ export default function WebNavbar({
           {/* Live Sync Badge & TV Action Button */}
           <div className="flex items-center gap-2.5">
             {/* Live Sync Status */}
-            <div className="hidden sm:flex items-center gap-2 bg-slate-50 border border-slate-200/80 px-3 py-1.5 rounded-xl text-xs">
+            <div className="hidden sm:flex items-center gap-2 bg-slate-50 border border-slate-200/90 px-3 py-1.5 rounded-xl text-xs">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="font-bold text-slate-700">
                 {isLive ? "Live Sync" : "Cached"}
@@ -108,10 +109,10 @@ export default function WebNavbar({
                 onClick={onRefresh}
                 disabled={isRefreshing}
                 title="Sinkronkan Data Spreadsheet Sekarang"
-                className="text-slate-400 hover:text-rose-600 transition-all disabled:opacity-50"
+                className="text-slate-400 hover:text-slate-900 transition-all disabled:opacity-50"
               >
                 <RefreshCw
-                  className={`w-3.5 h-3.5 ${isRefreshing ? "animate-spin text-rose-600" : ""}`}
+                  className={`w-3.5 h-3.5 ${isRefreshing ? "animate-spin text-slate-900" : ""}`}
                 />
               </button>
             </div>
@@ -119,9 +120,10 @@ export default function WebNavbar({
             {/* Launch TV Display Button */}
             <button
               onClick={onOpenTvMode}
-              className="px-4 py-2.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-extrabold rounded-xl text-xs shadow-md shadow-rose-600/20 flex items-center gap-2 transition-all transform hover:-translate-y-0.5"
+              className="px-4 py-2.5 bg-slate-900 hover:bg-black text-white font-bold rounded-xl text-xs shadow-xs hover:shadow-md flex items-center gap-2 transition-all border border-slate-800"
             >
-              <Tv className="w-4 h-4 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
+              <Tv className="w-4 h-4 text-slate-300" />
               <span>Display TV Lobi</span>
             </button>
 

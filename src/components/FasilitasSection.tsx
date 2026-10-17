@@ -75,11 +75,12 @@ export default function FasilitasSection() {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
           <div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-rose-600 uppercase tracking-widest bg-rose-50 px-3 py-1 rounded-full mb-3 border border-rose-200">
-              <Building2 className="w-3.5 h-3.5" />
+            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-800 uppercase tracking-widest bg-slate-100 px-3 py-1 rounded-full mb-3 border border-slate-200">
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-600" />
+              <Building2 className="w-3.5 h-3.5 text-slate-700" />
               <span>Kawasan Solo Techno Park</span>
             </div>
-            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
+            <h2 className="text-2xl sm:text-4xl font-black text-slate-950 tracking-tight">
               Klaster Fasilitas & Lokasi Kunjungan
             </h2>
             <p className="text-sm sm:text-base text-slate-600 max-w-2xl mt-2 font-medium">
@@ -88,7 +89,7 @@ export default function FasilitasSection() {
               penelitian inovatif.
             </p>
           </div>
-          <span className="mt-4 md:mt-0 text-xs font-bold text-slate-500 bg-slate-100 px-4 py-2 rounded-xl border border-slate-200 w-fit">
+          <span className="mt-4 md:mt-0 text-xs font-bold text-slate-600 bg-slate-100 px-4 py-2 rounded-xl border border-slate-200 w-fit">
             Area Luas 8 Hektar • Surakarta
           </span>
         </div>
@@ -100,11 +101,11 @@ export default function FasilitasSection() {
             return (
               <div
                 key={f.id}
-                className="bg-white rounded-3xl p-6 border border-slate-200/90 hover:border-rose-300 shadow-xs hover:shadow-lg hover:shadow-rose-600/5 transition-all duration-300 flex flex-col justify-between group"
+                className="bg-white rounded-3xl p-6 border border-slate-200/90 hover:border-slate-400 shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-between group"
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <div className="p-3 bg-rose-50 text-rose-600 rounded-2xl group-hover:bg-rose-600 group-hover:text-white transition-all shadow-xs">
+                    <div className="p-3 bg-slate-100 text-slate-900 rounded-2xl group-hover:bg-slate-900 group-hover:text-white transition-all shadow-2xs">
                       <Icon className="w-6 h-6" />
                     </div>
                     <span className="text-[11px] font-extrabold px-3 py-1 rounded-full bg-slate-100 text-slate-700">
@@ -112,10 +113,10 @@ export default function FasilitasSection() {
                     </span>
                   </div>
 
-                  <span className="text-[11px] font-bold text-rose-600 tracking-wider uppercase block mb-1">
+                  <span className="text-[11px] font-bold text-slate-500 tracking-wider uppercase block mb-1">
                     {f.category}
                   </span>
-                  <h3 className="text-lg font-black text-slate-900 group-hover:text-rose-600 transition-colors">
+                  <h3 className="text-lg font-black text-slate-950 group-hover:text-slate-900 transition-colors">
                     {f.name}
                   </h3>
                   <p className="text-xs text-slate-600 leading-relaxed mt-2 font-medium">
@@ -125,7 +126,7 @@ export default function FasilitasSection() {
 
                 <div className="pt-5 mt-5 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-slate-500">
                   <span>{f.stats}</span>
-                  <ChevronRight className="w-4 h-4 text-rose-600 group-hover:translate-x-1 transition-transform" />
+                  <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-rose-600 group-hover:translate-x-1 transition-all" />
                 </div>
               </div>
             );
