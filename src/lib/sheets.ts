@@ -236,5 +236,9 @@ export function transformRowsToJadwal(rows: string[][]): JadwalKunjungan[] {
     });
   }
 
+  // Ensure default list is sorted from newest to oldest date (descending timestamp)
+  list.sort((a, b) => b.timestamp - a.timestamp);
+
   return list;
 }
+

@@ -303,7 +303,26 @@ export default function JadwalExplorer({
                 <table className="w-full text-left text-xs text-slate-700">
                   <thead className="bg-slate-50/80 border-b border-slate-200 text-slate-500 uppercase text-[11px] font-extrabold tracking-wider">
                     <tr>
-                      <th className="py-4 px-6">Tanggal & Waktu</th>
+                      <th
+                        className="py-4 px-6 cursor-pointer select-none hover:bg-slate-100 transition-colors"
+                        onClick={() => {
+                          setSortOrder((prev) => (prev === "newest" ? "oldest" : "newest"));
+                          setCurrentPage(1);
+                        }}
+                        title="Klik untuk mengubah urutan tanggal (Terbaru / Terlama)"
+                      >
+                        <div className="flex items-center gap-1.5">
+                          <span>Tanggal & Waktu</span>
+                          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-700" />
+                          <span className="text-[9px] font-bold text-rose-600 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200 uppercase tracking-wider">
+                            {sortOrder === "newest"
+                              ? "Terbaru"
+                              : sortOrder === "upcoming"
+                              ? "Mendatang"
+                              : "Terlama"}
+                          </span>
+                        </div>
+                      </th>
                       <th className="py-4 px-6">Instansi / Tamu</th>
                       <th className="py-4 px-6">Nama Kegiatan</th>
                       <th className="py-4 px-6">Lokasi / Ruangan</th>
