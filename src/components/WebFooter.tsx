@@ -51,18 +51,13 @@ export default function WebFooter() {
             </h4>
             <ul className="space-y-2 text-slate-600">
               <li>
-                <a href="#profil" className="hover:text-slate-950 transition-colors">
-                  Profil & Sejarah STP
+                <a href="#jadwal" className="hover:text-slate-950 transition-colors font-bold text-slate-900">
+                  Jadwal Kunjungan Terbuka
                 </a>
               </li>
               <li>
                 <a href="#fasilitas" className="hover:text-slate-950 transition-colors">
                   Fasilitas & Gedung
-                </a>
-              </li>
-              <li>
-                <a href="#jadwal" className="hover:text-slate-950 transition-colors">
-                  Jadwal Kunjungan Terbuka
                 </a>
               </li>
               <li>
@@ -99,7 +94,7 @@ export default function WebFooter() {
 
         {/* Bottom copyright */}
         <div className="pt-10 mt-10 border-t border-slate-100 text-center text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-3 font-medium">
-          <p>© 2026 Solo Techno Park. Hak Cipta Dilindungi Undang-Undang.</p>
+          <p>Hak Cipta 2026 Solo Techno Park. Hak Cipta Dilindungi Undang-Undang.</p>
           <p className="text-slate-400">
             Sistem Informasi Digital Signage & Agenda Resmi STP
           </p>

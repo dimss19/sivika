@@ -61,22 +61,16 @@ export default function WebNavbar({
           {/* Desktop Navigation Links */}
           <nav className="hidden lg:flex items-center gap-1 text-xs font-bold text-slate-700">
             <a
-              href="#profil"
-              className="px-3.5 py-2 rounded-xl hover:text-slate-950 hover:bg-slate-100 transition-all"
+              href="#jadwal"
+              className="px-3.5 py-2 rounded-xl hover:text-slate-950 hover:bg-slate-100 transition-all text-slate-900 font-extrabold"
             >
-              Profil STP
+              Jadwal Kunjungan
             </a>
             <a
               href="#fasilitas"
               className="px-3.5 py-2 rounded-xl hover:text-slate-950 hover:bg-slate-100 transition-all"
             >
               Fasilitas & Kawasan
-            </a>
-            <a
-              href="#jadwal"
-              className="px-3.5 py-2 rounded-xl hover:text-slate-950 hover:bg-slate-100 transition-all"
-            >
-              Jadwal Kunjungan
             </a>
             <a
               href="#video"
@@ -134,11 +128,11 @@ export default function WebNavbar({
       {mobileMenuOpen && (
         <div className="lg:hidden bg-white border-b border-slate-200 px-4 py-4 space-y-1.5 text-xs font-bold text-slate-700 animate-in slide-in-from-top-2 duration-150">
           <a
-            href="#profil"
+            href="#jadwal"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-3.5 py-2.5 rounded-xl hover:bg-slate-50"
+            className="block px-3.5 py-2.5 rounded-xl hover:bg-slate-50 text-rose-600 font-extrabold"
           >
-            Profil STP
+            Jadwal Kunjungan ({totalSchedule} Agenda)
           </a>
           <a
             href="#fasilitas"
@@ -148,18 +142,11 @@ export default function WebNavbar({
             Fasilitas & Kawasan
           </a>
           <a
-            href="#jadwal"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block px-3.5 py-2.5 rounded-xl hover:bg-slate-50 text-rose-600"
-          >
-            Jadwal Kunjungan ({totalSchedule} Agenda)
-          </a>
-          <a
             href="#video"
             onClick={() => setMobileMenuOpen(false)}
             className="block px-3.5 py-2.5 rounded-xl hover:bg-slate-50"
           >
-            Video Profil STP
+            Video Profil
           </a>
           <a
             href="#kontak"
