@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   Clock,
   CalendarDays,
@@ -271,9 +272,17 @@ export default function TVDisplayView({
     >
       {/* 1. TOP HEADER BAR */}
       <header className="bg-white border-b border-slate-200/80 px-4 sm:px-6 py-2.5 sm:py-3 shadow-xs flex items-center justify-between shrink-0 relative z-30 gap-2">
-        {/* Left: Logo & Branding */}
-        <div className="flex items-center gap-2.5 sm:gap-3.5 shrink-0">
-          <div className="relative w-10 sm:w-12 h-9 sm:h-10 flex items-center justify-center p-1 bg-white rounded-xl border border-slate-200 shadow-2xs">
+        {/* Left: Logo & Branding (Clickable to return to http://localhost:3000/ web portal) */}
+        <Link
+          href="/"
+          onClick={(e) => {
+            e.preventDefault();
+            onCloseTvMode();
+          }}
+          title="Kembali ke Portal Web (http://localhost:3000/)"
+          className="flex items-center gap-2.5 sm:gap-3.5 shrink-0 group cursor-pointer transition-opacity hover:opacity-85"
+        >
+          <div className="relative w-10 sm:w-12 h-9 sm:h-10 flex items-center justify-center p-1 bg-white rounded-xl border border-slate-200 shadow-2xs group-hover:border-slate-300 transition-colors">
             <Image
               src="/logo.png"
               alt="Solo Techno Park"
@@ -291,7 +300,7 @@ export default function TVDisplayView({
               SIVIKA • SISTEM INFORMASI JADWAL KUNJUNGAN
             </p>
           </div>
-        </div>
+        </Link>
 
         {/* Center: 3 Navigation Tabs (Desktop & Tablet) */}
         <div className="hidden md:flex items-center gap-1.5 lg:gap-2 shrink-0">
