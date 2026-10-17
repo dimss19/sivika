@@ -11,6 +11,7 @@ import {
   ChevronRight,
   Tv,
   FileSpreadsheet,
+  ArrowUpDown,
 } from "lucide-react";
 import { JadwalKunjungan, SPREADSHEET_URL } from "@/lib/sheets";
 
@@ -28,10 +29,11 @@ export default function JadwalExplorer({
   const [activeTab, setActiveTab] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [viewMode, setViewMode] = useState<"table" | "cards">("table");
+  const [sortOrder, setSortOrder] = useState<"newest" | "upcoming" | "oldest">("newest");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 12;
 
-  // Tabs filtering
+  // Tabs & Sort filtering for 100% genuine spreadsheet navigation
   const filteredItems = useMemo(() => {
     let result = [...items];
 
@@ -57,8 +59,21 @@ export default function JadwalExplorer({
       );
     }
 
+    // Sort order: newest (default: 2026-2027 first), upcoming, or oldest (2024 first)
+    if (sortOrder === "newest") {
+      result.sort((a, b) => b.timestamp - a.timestamp);
+    } else if (sortOrder === "upcoming") {
+      result.sort((a, b) => {
+        if (a.isUpcoming && !b.isUpcoming) return -1;
+        if (!a.isUpcoming && b.isUpcoming) return 1;
+        return a.timestamp - b.timestamp;
+      });
+    } else if (sortOrder === "oldest") {
+      result.sort((a, b) => a.timestamp - b.timestamp);
+    }
+
     return result;
-  }, [items, activeTab, searchQuery]);
+  }, [items, activeTab, searchQuery, sortOrder]);
 
   const totalPages = Math.max(1, Math.ceil(filteredItems.length / itemsPerPage));
   const paginatedItems = filteredItems.slice(
@@ -175,28 +190,81 @@ export default function JadwalExplorer({
               </button>
             </div>
 
-            {/* View Mode Toggle: Table or Cards */}
-            <div className="flex items-center bg-slate-100 p-1 rounded-2xl text-xs font-bold">
-              <button
-                onClick={() => setViewMode("table")}
-                className={`px-3.5 py-1.5 rounded-xl transition-all ${
-                  viewMode === "table"
-                    ? "bg-white text-slate-900 shadow-xs"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                Tabel
-              </button>
-              <button
-                onClick={() => setViewMode("cards")}
-                className={`px-3.5 py-1.5 rounded-xl transition-all ${
-                  viewMode === "cards"
-                    ? "bg-white text-slate-900 shadow-xs"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                Kartu
-              </button>
+            {/* Sort Order & View Mode Toggles */}
+            <div className="flex flex-wrap items-center gap-2">
+              {/* Sort Order Toggle */}
+              <div className="flex items-center bg-slate-100 p-1 rounded-2xl text-xs font-bold border border-slate-200/80">
+                <span className="text-[10px] text-slate-400 font-extrabold uppercase px-2 flex items-center gap-1">
+                  <ArrowUpDown className="w-3 h-3 text-slate-500" />
+                  <span className="hidden sm:inline">Urut:</span>
+                </span>
+                <button
+                  onClick={() => {
+                    setSortOrder("newest");
+                    setCurrentPage(1);
+                  }}
+                  className={`px-3 py-1.5 rounded-xl transition-all ${
+                    sortOrder === "newest"
+                      ? "bg-white text-slate-900 shadow-xs font-black"
+                      : "text-slate-600 hover:text-slate-900 font-semibold"
+                  }`}
+                  title="Tampilkan agenda terbaru (2026 - 2027) terlebih dahulu"
+                >
+                  Terbaru
+                </button>
+                <button
+                  onClick={() => {
+                    setSortOrder("upcoming");
+                    setCurrentPage(1);
+                  }}
+                  className={`px-3 py-1.5 rounded-xl transition-all ${
+                    sortOrder === "upcoming"
+                      ? "bg-white text-slate-900 shadow-xs font-black"
+                      : "text-slate-600 hover:text-slate-900 font-semibold"
+                  }`}
+                  title="Tampilkan agenda mendatang terlebih dahulu"
+                >
+                  Mendatang
+                </button>
+                <button
+                  onClick={() => {
+                    setSortOrder("oldest");
+                    setCurrentPage(1);
+                  }}
+                  className={`px-3 py-1.5 rounded-xl transition-all ${
+                    sortOrder === "oldest"
+                      ? "bg-white text-slate-900 shadow-xs font-black"
+                      : "text-slate-600 hover:text-slate-900 font-semibold"
+                  }`}
+                  title="Tampilkan urutan data awal (2024)"
+                >
+                  Terlama
+                </button>
+              </div>
+
+              {/* View Mode Toggle: Table or Cards */}
+              <div className="flex items-center bg-slate-100 p-1 rounded-2xl text-xs font-bold border border-slate-200/80">
+                <button
+                  onClick={() => setViewMode("table")}
+                  className={`px-3.5 py-1.5 rounded-xl transition-all ${
+                    viewMode === "table"
+                      ? "bg-white text-slate-900 shadow-xs"
+                      : "text-slate-600 hover:text-slate-900"
+                  }`}
+                >
+                  Tabel
+                </button>
+                <button
+                  onClick={() => setViewMode("cards")}
+                  className={`px-3.5 py-1.5 rounded-xl transition-all ${
+                    viewMode === "cards"
+                      ? "bg-white text-slate-900 shadow-xs"
+                      : "text-slate-600 hover:text-slate-900"
+                  }`}
+                >
+                  Kartu
+                </button>
+              </div>
             </div>
           </div>
 

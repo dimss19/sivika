@@ -105,8 +105,28 @@ function HomeContent() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [fetchJadwal, handleCloseTvMode, handleOpenTvMode, isTvMode]);
 
-  const todayCount = useMemo(() => {
-    return data.filter((item) => item.isToday).length;
+  const realStats = useMemo(() => {
+    const totalSchedule = data.length;
+    const uniqueInstansi = new Set(
+      data
+        .map((x) => x.instansi)
+        .filter((x) => x && x !== "-" && x !== "Tamu Solo Techno Park")
+    ).size;
+    let totalPeserta = 0;
+    data.forEach((x) => {
+      const p = parseInt((x.jumlahPeserta || "").replace(/[^0-9]/g, ""), 10);
+      if (!isNaN(p)) totalPeserta += p;
+    });
+    const upcomingCount = data.filter((x) => x.isUpcoming).length;
+    const todayCount = data.filter((x) => x.isToday).length;
+
+    return {
+      totalSchedule,
+      uniqueInstansi,
+      totalPeserta,
+      upcomingCount,
+      todayCount,
+    };
   }, [data]);
 
   return (
@@ -140,8 +160,11 @@ function HomeContent() {
           <main className="flex-1">
             <ProfileHero
               onOpenTvMode={handleOpenTvMode}
-              totalSchedule={data.length}
-              todayCount={todayCount}
+              totalSchedule={realStats.totalSchedule}
+              todayCount={realStats.todayCount}
+              upcomingCount={realStats.upcomingCount}
+              uniqueInstansi={realStats.uniqueInstansi}
+              totalPeserta={realStats.totalPeserta}
             />
 
             <FasilitasSection />

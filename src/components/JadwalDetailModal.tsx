@@ -147,7 +147,7 @@ export default function JadwalDetailModal({
                   PIC Petugas STP
                 </p>
                 <p className="text-sm font-extrabold text-slate-900 mt-0.5">
-                  {jadwal.pic || "Humas & Protokol STP"}
+                  {jadwal.pic && jadwal.pic !== "-" ? jadwal.pic : "-"}
                 </p>
                 <p className="text-xs text-slate-500 flex items-center gap-1 mt-1 font-mono">
                   <FileText className="w-3.5 h-3.5 text-slate-400" />

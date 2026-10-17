@@ -16,6 +16,7 @@ import {
   Users,
   RefreshCw,
   AlertCircle,
+  CloudSun,
 } from "lucide-react";
 import { JadwalKunjungan } from "@/lib/sheets";
 import STPVideoPlayer from "./STPVideoPlayer";
@@ -31,11 +32,9 @@ interface TVDisplayViewProps {
 
 export type TVModeType = "today" | "carousel" | "split";
 
-function formatKegiatan(kegiatan: string, kategori?: string): string {
+function formatKegiatan(kegiatan: string): string {
   if (!kegiatan || kegiatan.trim() === "-" || kegiatan.trim() === "") {
-    if (kategori === "Pelatihan") return "Pelatihan & Workshop Vokasi";
-    if (kategori === "Kunjungan Kerja") return "Kunjungan Kerja & Audiensi Resmi";
-    return "Kunjungan Industri & Eksplorasi Sains";
+    return "Agenda Kunjungan";
   }
   return kegiatan
     .replace(/_/g, " ")
@@ -82,6 +81,7 @@ export default function TVDisplayView({
   const [progress, setProgress] = useState<number>(0);
   const [time, setTime] = useState<string>("");
   const [date, setDate] = useState<string>("");
+  const [weather, setWeather] = useState<{ temp: number; desc: string } | null>(null);
 
   // Clock ticker
   useEffect(() => {
@@ -110,18 +110,61 @@ export default function TVDisplayView({
     return () => clearInterval(timer);
   }, []);
 
-  // Filter items based on TV Mode
+  // Fetch real live weather for Surakarta (-7.5583, 110.8317)
+  useEffect(() => {
+    const fetchWeather = async () => {
+      try {
+        const res = await fetch(
+          "https://api.open-meteo.com/v1/forecast?latitude=-7.5583&longitude=110.8317&current=temperature_2m,weather_code&timezone=Asia%2FJakarta"
+        );
+        const d = await res.json();
+        if (d && d.current) {
+          const code = d.current.weather_code;
+          let desc = "Cerah Berawan";
+          if (code === 0) desc = "Cerah";
+          else if (code <= 3) desc = "Cerah Berawan";
+          else if (code <= 48) desc = "Berkabut";
+          else if (code <= 67) desc = "Hujan";
+          else desc = "Berawan";
+
+          setWeather({
+            temp: Math.round(d.current.temperature_2m),
+            desc,
+          });
+        }
+      } catch {
+        // Fallback or offline: ignore gracefully
+      }
+    };
+
+    fetchWeather();
+    const weatherTimer = setInterval(fetchWeather, 600000); // 10 minutes
+    return () => clearInterval(weatherTimer);
+  }, []);
+
+  // Filter items based on TV Mode with precise chronological order
   const todayItems = useMemo(() => {
-    return data.filter((item) => item.isToday);
+    return data
+      .filter((item) => item.isToday)
+      .sort((a, b) => a.timestamp - b.timestamp);
   }, [data]);
 
-  // Prioritize today + upcoming items for signage relevance
-  const relevantItems = useMemo(() => {
-    const today = data.filter((item) => item.isToday);
-    const upcoming = data.filter((item) => !item.isToday && item.isUpcoming);
-    const past = data.filter((item) => !item.isToday && !item.isUpcoming);
-    return [...today, ...upcoming, ...past];
+  const upcomingItems = useMemo(() => {
+    return data
+      .filter((item) => !item.isToday && item.isUpcoming)
+      .sort((a, b) => a.timestamp - b.timestamp);
   }, [data]);
+
+  const pastItems = useMemo(() => {
+    return data
+      .filter((item) => !item.isToday && !item.isUpcoming)
+      .sort((a, b) => b.timestamp - a.timestamp);
+  }, [data]);
+
+  // Prioritize today + upcoming items in chronological sequence
+  const relevantItems = useMemo(() => {
+    return [...todayItems, ...upcomingItems, ...pastItems];
+  }, [todayItems, upcomingItems, pastItems]);
 
   const activeItems = useMemo(() => {
     if (tvMode === "today") {
@@ -261,8 +304,16 @@ export default function TVDisplayView({
           </button>
         </div>
 
-        {/* Right: Date, Clock, and Quick Actions */}
+        {/* Right: Date, Weather, Clock, and Quick Actions */}
         <div className="flex items-center gap-3 shrink-0">
+          {/* Live Surakarta Weather */}
+          {weather && (
+            <div className="hidden 2xl:flex items-center gap-1.5 text-xs font-bold text-slate-800 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl whitespace-nowrap shrink-0 shadow-2xs">
+              <CloudSun className="w-3.5 h-3.5 text-rose-600" />
+              <span>Surakarta {weather.temp}°C • {weather.desc}</span>
+            </div>
+          )}
+
           {/* Date */}
           <div className="hidden xl:flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl whitespace-nowrap shrink-0">
             <Calendar className="w-3.5 h-3.5 text-slate-400" />
@@ -406,10 +457,7 @@ export default function TVDisplayView({
                 <div className="grid grid-cols-2 gap-3.5 flex-1 min-h-0 overflow-hidden pr-0.5">
                   {displayedItems.map((item, index) => {
                     const cat = getCategoryBadge(item.kategori);
-                    const formattedKegiatan = formatKegiatan(
-                      item.kegiatan,
-                      item.kategori
-                    );
+                    const formattedKegiatan = formatKegiatan(item.kegiatan);
                     return (
                       <div
                         key={`${activePage}-${item.id}`}
@@ -473,10 +521,7 @@ export default function TVDisplayView({
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5 flex-1 min-h-0 overflow-hidden pr-0.5">
               {displayedItems.map((item, index) => {
                 const cat = getCategoryBadge(item.kategori);
-                const formattedKegiatan = formatKegiatan(
-                  item.kegiatan,
-                  item.kategori
-                );
+                const formattedKegiatan = formatKegiatan(item.kegiatan);
                 return (
                   <div
                     key={`${activePage}-${item.id}`}

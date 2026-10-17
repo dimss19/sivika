@@ -93,16 +93,16 @@ export default function WebFooter() {
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-slate-700 shrink-0 mt-0.5" />
                 <span>
-                  Jl. Ki Hajar Dewantara No. 19, Jebres, Kec. Jebres, Kota Surakarta, Jawa Tengah 57126
+                  Gedung Solo Trade Center, Jl. Ki Hajar Dewantara No. 19, Jebres, Kec. Jebres, Kota Surakarta, Jawa Tengah 57126
                 </span>
               </div>
               <div className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-slate-700 shrink-0" />
-                <span>(0271) 666628 / +62 811-2651-789</span>
+                <span>(0271) 666628 / WA: 0857-4311-0623</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-slate-700 shrink-0" />
-                <span>info@solotechnopark.id</span>
+                <span>info.solotechnopark@gmail.com</span>
               </div>
             </div>
           </div>
