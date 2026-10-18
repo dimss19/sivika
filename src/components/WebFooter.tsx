@@ -86,7 +86,7 @@ export default function WebFooter() {
         <div className="pt-10 mt-10 border-t border-slate-100 text-center text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-3 font-medium">
           <p>Hak Cipta 2026 Solo Techno Park. Hak Cipta Dilindungi Undang-Undang.</p>
           <p className="text-slate-400">
-            Sistem Informasi Digital Signage & Agenda Resmi STP
+            SIVIKA • Sistem Informasi Jadwal Kunjungan dan Agenda STP
           </p>
         </div>
       </div>

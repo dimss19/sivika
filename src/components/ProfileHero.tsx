@@ -43,7 +43,7 @@ export default function ProfileHero({
             </div>
 
             <h1 className="text-3xl sm:text-5xl font-black text-slate-950 tracking-tight leading-[1.15]">
-              Sistem Informasi Kunjungan{" "}
+              Sistem Informasi Jadwal Kunjungan & Agenda{" "}
               <span className="text-slate-900">Solo Techno Park</span>
               <span className="text-rose-600">.</span>
             </h1>

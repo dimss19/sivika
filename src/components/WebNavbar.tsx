@@ -52,7 +52,7 @@ export default function WebNavbar({
                   </span>
                 </div>
                 <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium tracking-wide truncate hidden sm:block">
-                  Sistem Informasi Kunjungan & Portal Agenda
+                  Sistem Informasi Jadwal Kunjungan dan Agenda
                 </p>
               </div>
             </a>

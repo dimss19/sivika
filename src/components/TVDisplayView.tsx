@@ -329,7 +329,7 @@ export default function TVDisplayView({
               SOLO<span className="text-rose-600">TECHNOPARK</span>
             </h1>
             <p className="text-[9px] sm:text-[10px] font-bold text-slate-400 tracking-wider uppercase whitespace-nowrap hidden sm:block">
-              SIVIKA • SISTEM INFORMASI JADWAL KUNJUNGAN
+              SIVIKA • SISTEM INFORMASI JADWAL KUNJUNGAN DAN AGENDA
             </p>
           </div>
         </Link>
